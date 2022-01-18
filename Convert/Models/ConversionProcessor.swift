@@ -19,6 +19,7 @@ class ConversionProcessor {
         TemperatureConversionService.shared,
         MassConversionService.shared,
         TimeConversionService.shared,
+        AreaConversionService.shared,
     ]
     
     func supportedConversionAndUnits() async -> [ConversionType:Result<[UnitInfo], ServiceError>] {
