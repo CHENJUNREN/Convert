@@ -16,6 +16,7 @@
 		A2668DBB278F3CD900F2BF4A /* currencyCodeToName.csv in Resources */ = {isa = PBXBuildFile; fileRef = A2668DBA278F3CD900F2BF4A /* currencyCodeToName.csv */; };
 		A28170CA2786C05500A8EECD /* MassConversionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A28170C92786C05500A8EECD /* MassConversionService.swift */; };
 		A2836B21279702B000F39D49 /* AreaConversionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2836B20279702B000F39D49 /* AreaConversionService.swift */; };
+		A2836B23279713C000F39D49 /* SpeedConversionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2836B22279713C000F39D49 /* SpeedConversionService.swift */; };
 		A292C7A52781CB79008970C5 /* TemperatureConversionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A292C7A42781CB79008970C5 /* TemperatureConversionService.swift */; };
 		A2A192582778B09E009D1A8F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A192572778B09D009D1A8F /* SettingsView.swift */; };
 		A2A4C2032775ABDB00F641AA /* ConvertApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A4C2022775ABDB00F641AA /* ConvertApp.swift */; };
@@ -44,6 +45,7 @@
 		A2668DBA278F3CD900F2BF4A /* currencyCodeToName.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = currencyCodeToName.csv; sourceTree = "<group>"; };
 		A28170C92786C05500A8EECD /* MassConversionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MassConversionService.swift; sourceTree = "<group>"; };
 		A2836B20279702B000F39D49 /* AreaConversionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AreaConversionService.swift; sourceTree = "<group>"; };
+		A2836B22279713C000F39D49 /* SpeedConversionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeedConversionService.swift; sourceTree = "<group>"; };
 		A292C7A42781CB79008970C5 /* TemperatureConversionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemperatureConversionService.swift; sourceTree = "<group>"; };
 		A2A192572778B09D009D1A8F /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		A2A4C1FF2775ABDB00F641AA /* Convert.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Convert.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -173,6 +175,7 @@
 				A242E22527958BC900F13604 /* TimeConversionService.swift */,
 				A292C7A42781CB79008970C5 /* TemperatureConversionService.swift */,
 				A2836B20279702B000F39D49 /* AreaConversionService.swift */,
+				A2836B22279713C000F39D49 /* SpeedConversionService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -261,6 +264,7 @@
 				A2A4C2132775B39A00F641AA /* DocBox.swift in Sources */,
 				A23D872A278AB6A1007B3D54 /* NoticeBox.swift in Sources */,
 				A2A4C2052775ABDB00F641AA /* HomeView.swift in Sources */,
+				A2836B23279713C000F39D49 /* SpeedConversionService.swift in Sources */,
 				A231132C277F6C120063C0E6 /* LengthConversionService.swift in Sources */,
 				A23B227427785162005326CA /* View+gradientForeground.swift in Sources */,
 				A2836B21279702B000F39D49 /* AreaConversionService.swift in Sources */,
