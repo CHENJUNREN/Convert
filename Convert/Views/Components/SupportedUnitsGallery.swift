@@ -65,9 +65,10 @@ struct NormalUnitCell: View {
 
     var body: some View {
         GroupBox {
-            VStack(alignment: .leading, spacing: 2) {
+            VStack(alignment: .leading, spacing: 3) {
                 HStack {
                     Text(unit.cName)
+                        .font(.callout)
 
                     if let abbr = unit.abbr {
                         Divider()
@@ -78,11 +79,9 @@ struct NormalUnitCell: View {
                     Spacer()
                 }
 
-                if let eName = unit.eName {
-                    Text(eName)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
+                Text(unit.eName ?? " ")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
             }
         }
         .contextMenu {
