@@ -21,6 +21,7 @@ class ConversionProcessor {
         TimeConversionService.shared,
         AreaConversionService.shared,
         SpeedConversionService.shared,
+        EnergyConversionService.shared,
     ]
     
     func supportedConversionAndUnits() async -> [ConversionType:Result<[UnitInfo], ServiceError>] {
