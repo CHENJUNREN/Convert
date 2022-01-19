@@ -26,7 +26,7 @@ class MassConversionService: ConversionService, LinearConversion {
         (.ounces, UnitInfo(cName: "盎司", eName: "Ounce", abbr: "oz")),
         (.stones, UnitInfo(cName: "英石", eName: "Stone", abbr: "st")),
         (.carats, UnitInfo(cName: "克拉", eName: "Carat", abbr: "ct")),
-        (.ouncesTroy, UnitInfo(cName: "金衡制盎司", eName: "Ounce Troy", abbr: "ozt")),
+        (.ouncesTroy, UnitInfo(cName: "金衡盎司", eName: "Ounce Troy", abbr: "ozt")),
         (.jins, UnitInfo(cName: "斤")),
         (.liangs, UnitInfo(cName: "两")),
     ]
