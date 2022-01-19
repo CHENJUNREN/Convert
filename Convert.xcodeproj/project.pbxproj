@@ -12,6 +12,7 @@
 		A23B22772778915F005326CA /* DocView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A23B22762778915F005326CA /* DocView.swift */; };
 		A23D872A278AB6A1007B3D54 /* NoticeBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A23D8729278AB6A1007B3D54 /* NoticeBox.swift */; };
 		A242A87E2798011100EE9A01 /* EnergyConversionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A242A87D2798011100EE9A01 /* EnergyConversionService.swift */; };
+		A242A88027980B3700EE9A01 /* VolumeConversionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A242A87F27980B3700EE9A01 /* VolumeConversionService.swift */; };
 		A242E22627958BC900F13604 /* TimeConversionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A242E22527958BC900F13604 /* TimeConversionService.swift */; };
 		A2668DB9278F32F200F2BF4A /* CustomType.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2668DB8278F32F200F2BF4A /* CustomType.swift */; };
 		A2668DBB278F3CD900F2BF4A /* currencyCodeToName.csv in Resources */ = {isa = PBXBuildFile; fileRef = A2668DBA278F3CD900F2BF4A /* currencyCodeToName.csv */; };
@@ -41,6 +42,7 @@
 		A23B22762778915F005326CA /* DocView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocView.swift; sourceTree = "<group>"; };
 		A23D8729278AB6A1007B3D54 /* NoticeBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoticeBox.swift; sourceTree = "<group>"; };
 		A242A87D2798011100EE9A01 /* EnergyConversionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnergyConversionService.swift; sourceTree = "<group>"; };
+		A242A87F27980B3700EE9A01 /* VolumeConversionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeConversionService.swift; sourceTree = "<group>"; };
 		A242E22527958BC900F13604 /* TimeConversionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeConversionService.swift; sourceTree = "<group>"; };
 		A25D06342777650A0093249D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		A2668DB8278F32F200F2BF4A /* CustomType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomType.swift; sourceTree = "<group>"; };
@@ -179,6 +181,7 @@
 				A2836B20279702B000F39D49 /* AreaConversionService.swift */,
 				A2836B22279713C000F39D49 /* SpeedConversionService.swift */,
 				A242A87D2798011100EE9A01 /* EnergyConversionService.swift */,
+				A242A87F27980B3700EE9A01 /* VolumeConversionService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -261,6 +264,7 @@
 				A242A87E2798011100EE9A01 /* EnergyConversionService.swift in Sources */,
 				A2A192582778B09E009D1A8F /* SettingsView.swift in Sources */,
 				A23B22772778915F005326CA /* DocView.swift in Sources */,
+				A242A88027980B3700EE9A01 /* VolumeConversionService.swift in Sources */,
 				A2F1988A2779BB1600514793 /* CurrencyConversionService.swift in Sources */,
 				A2F198842779B9B600514793 /* MasterViewModel.swift in Sources */,
 				A292C7A52781CB79008970C5 /* TemperatureConversionService.swift in Sources */,
