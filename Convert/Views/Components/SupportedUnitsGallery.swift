@@ -74,14 +74,15 @@ struct NormalUnitCell: View {
                         Divider()
                         Text(abbr)
                             .font(.headline)
+                            .foregroundColor(.secondary)
                     }
                     
                     Spacer()
                 }
 
-                Text(unit.eName ?? " ")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
+//                Text(unit.eName ?? " ")
+//                    .font(.caption)
+//                    .foregroundColor(.secondary)
             }
         }
         .contextMenu {
@@ -115,14 +116,14 @@ struct CurrencyUnitCell: View {
                     Divider()
                     Text(unit.abbr!)
                         .font(.headline)
+                        .foregroundColor(.secondary)
                 }
                 
-                Text(unit.eName!)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
+//                Text(unit.eName!)
+//                    .font(.caption)
+//                    .foregroundColor(.secondary)
             }
         }
-        .padding(.vertical, 3)
         .contextMenu {
             Button {
                 UIPasteboard.general.string = unit.abbr!
