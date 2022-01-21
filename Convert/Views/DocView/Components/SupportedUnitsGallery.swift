@@ -64,27 +64,29 @@ struct NormalUnitCell: View {
     let unit: UnitInfo
 
     var body: some View {
-        GroupBox {
-            VStack(alignment: .leading, spacing: 3) {
-                HStack {
-                    Text(unit.cName)
-                        .font(.callout)
+        VStack(alignment: .leading) {
+            HStack {
+                Text(unit.cName)
+                    .font(.callout)
 
-                    if let abbr = unit.abbr {
-                        Divider()
-                        Text(abbr)
-                            .font(.headline)
-                            .foregroundColor(.secondary)
-                    }
-                    
-                    Spacer()
+                if let abbr = unit.abbr {
+                    Divider()
+                    Text(abbr)
+                        .font(.headline)
+                        .foregroundColor(.secondary)
                 }
-
-//                Text(unit.eName ?? " ")
-//                    .font(.caption)
-//                    .foregroundColor(.secondary)
+                
+                Spacer()
             }
+
+            Text(unit.eName ?? " ")
+                .font(.caption)
+                .foregroundColor(.secondary)
         }
+        .padding(.vertical, 11)
+        .padding(.horizontal, 13)
+        .background(Color(uiColor: .secondarySystemBackground))
+        .cornerRadius(10)
         .contextMenu {
             if let abbr = unit.abbr {
                 Button {
@@ -119,11 +121,12 @@ struct CurrencyUnitCell: View {
                         .foregroundColor(.secondary)
                 }
                 
-//                Text(unit.eName!)
-//                    .font(.caption)
-//                    .foregroundColor(.secondary)
+                Text(unit.eName!)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
             }
         }
+        .padding(.vertical, 3)
         .contextMenu {
             Button {
                 UIPasteboard.general.string = unit.abbr!
