@@ -10,6 +10,12 @@ import Foundation
 @MainActor
 class MasterViewModel: ObservableObject {
     
+    init() {
+        Task {
+            await fetchAllConversionUnits()
+        }
+    }
+    
     // MARK: - Model
     
     let conversionProcessor: ConversionProcessor = ConversionProcessor.shared
@@ -21,7 +27,6 @@ class MasterViewModel: ObservableObject {
     @Published var conversionError: ServiceError?
     
     func fetchConversionResult(for query: String) async {
-        
         conversionError = nil
         switch await conversionProcessor.conversionResult(for: query) {
         case .failure(let error):
@@ -40,7 +45,6 @@ class MasterViewModel: ObservableObject {
     var unitsBackup: [ConversionType:[UnitInfo]]?
     
     func searchUnits(in conversionType: ConversionType, by keyword: String) {
-        
         // search ends, restore list from backup
         guard !keyword.isEmpty else {
             restoreUnitsList(for: conversionType)
@@ -59,12 +63,10 @@ class MasterViewModel: ObservableObject {
     }
     
     func restoreUnitsList(for conversionType: ConversionType) {
-        
         conversionUnits?[conversionType] = unitsBackup?[conversionType]
     }
     
     func fetchAllConversionUnits() async {
-        
         let fetchResult = await conversionProcessor.supportedConversionAndUnits()
         
         var servicesWithoutError = [ConversionType:[UnitInfo]]()

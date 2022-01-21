@@ -10,17 +10,16 @@ import SwiftUI
 struct DocView: View {
     
     @EnvironmentObject var viewModel: MasterViewModel
-    
     @Environment(\.dismiss) var dismiss
     
     @State private var searchBarText = ""
-//    @State private var selectedConversionType: ConversionType = .length
-    @AppStorage(wrappedValue: ConversionType.length, "selectedTab") var selectedConversionType
+    @Binding var selectedConversionType: ConversionType
+    @Binding var showNotice: Bool
     
     var body: some View {
         NavigationView {
             VStack(spacing: 15) {
-                NoticeBox()
+                NoticeBox(showNotice: $showNotice)
                 
                 Picker("支持的转换类型和单位", selection: $selectedConversionType) {
                     ForEach(ConversionType.allCases, id: \.self) { type in
@@ -75,6 +74,7 @@ struct DocView: View {
 
 struct DocView_Previews: PreviewProvider {
     static var previews: some View {
-        DocView()
+        DocView(selectedConversionType: Binding<ConversionType>.constant(.currency),
+                showNotice: Binding<Bool>.constant(true))
     }
 }

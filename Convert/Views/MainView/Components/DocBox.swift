@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct DocBox: View {
-    @State private var isPresented = false
+    @Binding var presentDocView: Bool
     
     let geo: GeometryProxy
     
@@ -29,13 +29,10 @@ struct DocBox: View {
             .foregroundColor(.secondary)
             
             Button("查看更多") {
-                isPresented = true;
+                presentDocView = true;
             }
             .buttonStyle(.borderedProminent)
             .buttonBorderShape(.capsule)
-            .fullScreenCover(isPresented: $isPresented) {
-                DocView()
-            }
         }
         .padding()
         .frame(width: geo.size.width, height: geo.size.height)

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct NoticeBox: View {
-    @State private var showNotice = true
+    @Binding var showNotice: Bool
     
     var body: some View {
         GroupBox {

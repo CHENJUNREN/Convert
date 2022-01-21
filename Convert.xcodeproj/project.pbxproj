@@ -27,6 +27,8 @@
 		A2A4C20A2775ABDD00F641AA /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2A4C2092775ABDD00F641AA /* Preview Assets.xcassets */; };
 		A2A4C2112775B38C00F641AA /* InputBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A4C2102775B38C00F641AA /* InputBox.swift */; };
 		A2A4C2132775B39A00F641AA /* DocBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2A4C2122775B39A00F641AA /* DocBox.swift */; };
+		A2ABE3BC279AEB7A005B1BF5 /* Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2ABE3BB279AEB7A005B1BF5 /* Header.swift */; };
+		A2ABE3BE279AEC1D005B1BF5 /* ResultPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2ABE3BD279AEC1D005B1BF5 /* ResultPresentation.swift */; };
 		A2BA972A2780840F00BE846E /* SupportedUnitsGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2BA97292780840F00BE846E /* SupportedUnitsGallery.swift */; };
 		A2E08DF4277C53E200D1319E /* ConversionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E08DF3277C53E200D1319E /* ConversionService.swift */; };
 		A2E08DF6277CA8EB00D1319E /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E08DF5277CA8EB00D1319E /* Utils.swift */; };
@@ -58,6 +60,8 @@
 		A2A4C2092775ABDD00F641AA /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		A2A4C2102775B38C00F641AA /* InputBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputBox.swift; sourceTree = "<group>"; };
 		A2A4C2122775B39A00F641AA /* DocBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocBox.swift; sourceTree = "<group>"; };
+		A2ABE3BB279AEB7A005B1BF5 /* Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Header.swift; sourceTree = "<group>"; };
+		A2ABE3BD279AEC1D005B1BF5 /* ResultPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultPresentation.swift; sourceTree = "<group>"; };
 		A2BA97292780840F00BE846E /* SupportedUnitsGallery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportedUnitsGallery.swift; sourceTree = "<group>"; };
 		A2E08DF3277C53E200D1319E /* ConversionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversionService.swift; sourceTree = "<group>"; };
 		A2E08DF5277CA8EB00D1319E /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
@@ -111,7 +115,7 @@
 			children = (
 				A2ABE3B7279AE6EE005B1BF5 /* MainView */,
 				A2ABE3BA279AE7A8005B1BF5 /* DocView */,
-				A2A192572778B09D009D1A8F /* SettingsView.swift */,
+				A2ABE3BF279B02B1005B1BF5 /* SettingsView */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -169,6 +173,8 @@
 			children = (
 				A2A4C2102775B38C00F641AA /* InputBox.swift */,
 				A2A4C2122775B39A00F641AA /* DocBox.swift */,
+				A2ABE3BB279AEB7A005B1BF5 /* Header.swift */,
+				A2ABE3BD279AEC1D005B1BF5 /* ResultPresentation.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -180,6 +186,14 @@
 				A23B22762778915F005326CA /* DocView.swift */,
 			);
 			path = DocView;
+			sourceTree = "<group>";
+		};
+		A2ABE3BF279B02B1005B1BF5 /* SettingsView */ = {
+			isa = PBXGroup;
+			children = (
+				A2A192572778B09D009D1A8F /* SettingsView.swift */,
+			);
+			path = SettingsView;
 			sourceTree = "<group>";
 		};
 		A2F1987F2779B41000514793 /* ViewModels */ = {
@@ -281,6 +295,7 @@
 				A2A4C2112775B38C00F641AA /* InputBox.swift in Sources */,
 				A28170CA2786C05500A8EECD /* MassConversionService.swift in Sources */,
 				A2BA972A2780840F00BE846E /* SupportedUnitsGallery.swift in Sources */,
+				A2ABE3BE279AEC1D005B1BF5 /* ResultPresentation.swift in Sources */,
 				A242A87E2798011100EE9A01 /* EnergyConversionService.swift in Sources */,
 				A2A192582778B09E009D1A8F /* SettingsView.swift in Sources */,
 				A23B22772778915F005326CA /* DocView.swift in Sources */,
@@ -294,6 +309,7 @@
 				A2A4C2052775ABDB00F641AA /* MainView.swift in Sources */,
 				A2836B23279713C000F39D49 /* SpeedConversionService.swift in Sources */,
 				A231132C277F6C120063C0E6 /* LengthConversionService.swift in Sources */,
+				A2ABE3BC279AEB7A005B1BF5 /* Header.swift in Sources */,
 				A23B227427785162005326CA /* View+gradientForeground.swift in Sources */,
 				A2836B21279702B000F39D49 /* AreaConversionService.swift in Sources */,
 				A2668DB9278F32F200F2BF4A /* CustomType.swift in Sources */,

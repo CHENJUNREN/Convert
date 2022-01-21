@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct SettingsView: View {
+    
     @AppStorage(wrappedValue: 2, "preferredResultAccuracy") var resultAccuracy
     @AppStorage(wrappedValue: 0, "preferredAppearance") var selectedAppearance
     

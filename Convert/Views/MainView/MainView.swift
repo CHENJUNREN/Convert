@@ -9,9 +9,10 @@ import SwiftUI
 
 struct MainView: View {
     
-    @EnvironmentObject var viewModel: MasterViewModel
-    
     @FocusState var focusTextField: Bool
+    @State var presentDocView = false
+    @State var selectedConversionType: ConversionType = .currency
+    @State var showDocViewNotice = true
     
     var body: some View {
         NavigationView {
@@ -24,7 +25,7 @@ struct MainView: View {
                     }
                         
                     GeometryReader { geometry in
-                        DocBox(geo: geometry)
+                        DocBox(presentDocView: $presentDocView, geo: geometry)
                     }
                 }
             }
@@ -37,9 +38,9 @@ struct MainView: View {
                     focusTextField = false
                 }
             }
-        }
-        .task {
-            await viewModel.fetchAllConversionUnits()
+            .fullScreenCover(isPresented: $presentDocView) {
+                DocView(selectedConversionType: $selectedConversionType, showNotice: $showDocViewNotice)
+            }
         }
     }
     
@@ -48,37 +49,5 @@ struct MainView: View {
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         MainView()
-    }
-}
-
-struct Header: View {
-    @State var gradientValue = 0.0
-    
-    var body: some View {
-        HStack {
-//            Text("Convert.")
-//                .font(.custom("Menlo", size: 48, relativeTo: .largeTitle))
-//                .fontWeight(.ultraLight)
-            Text("就是转换。")
-                .font(.largeTitle.bold())
-                .animatableGradientForeground(fromGradient: Gradient(colors: [.pink, .accentColor]),
-                                              toGradient: Gradient(colors: [.red, .indigo]),
-                                              percentage: gradientValue)
-                .animation(.linear(duration: 5.0).delay(5.0).repeatForever(autoreverses: true), value: gradientValue)
-            
-            Spacer()
-            
-            NavigationLink {
-                SettingsView()
-            } label: {
-                Image(systemName: "ellipsis.circle")
-                    .font(.title2)
-            }
-        }
-        .padding(.vertical, 10)
-        .task {
-            try? await Task.sleep(nanoseconds: 2_000_000_000)
-            gradientValue = 1.0
-        }
     }
 }
