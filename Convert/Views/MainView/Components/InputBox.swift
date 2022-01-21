@@ -78,7 +78,7 @@ struct InputBox: View {
                     }
                     .contextMenu {
                         Button {
-                            UIPasteboard.general.string = formattedResult(for: result.toValue, with: resultAccuracy, using: .none)
+                            UIPasteboard.general.string = "\(result.toValue)"
                         } label: {
                             Label("拷贝数值", systemImage: "arrow.right.doc.on.clipboard")
                         }
@@ -127,7 +127,7 @@ struct NormalConversionResultPresentation: View {
     
     var body: some View {
         VStack(alignment: .center, spacing: 5) {
-            HStack(alignment: .lastTextBaseline, spacing: 5) {
+            HStack(alignment: .center, spacing: 5) {
                 Text(value)
                     .font(.largeTitle)
                     .lineLimit(1)
@@ -155,7 +155,7 @@ struct CurrencyConversionResultPresentation: View {
     
     var body: some View {
         VStack(alignment: .center, spacing: 5) {
-            HStack(alignment: .lastTextBaseline, spacing: 5) {
+            HStack(alignment: .center, spacing: 5) {
                 if let symbol = symbol {
                     Text(symbol)
                         .font(.title)
@@ -173,6 +173,7 @@ struct CurrencyConversionResultPresentation: View {
                 if let flag = flag {
                     Text(flag)
                 }
+                
                 Text(name)
             }
             .font(.title2)
