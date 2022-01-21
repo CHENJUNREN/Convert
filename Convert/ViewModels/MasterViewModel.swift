@@ -14,7 +14,7 @@ class MasterViewModel: ObservableObject {
     
     let conversionProcessor: ConversionProcessor = ConversionProcessor.shared
     
-    //  MARK: - HomeView
+    //  MARK: - MainView
     
     @Published var conversionResult: ConversionResult?
     

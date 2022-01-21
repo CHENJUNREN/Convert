@@ -17,29 +17,14 @@ struct SettingsView: View {
                 Stepper("精度: 小数点后 \(resultAccuracy) 位", value: $resultAccuracy, in: 0...5, step: 1) { bool in
                     
                 }
+            }
+            
+            Section {
                 Picker(selection: $selectedAppearance, label: Text("外观")) {
                     Text("系统").tag(0)
                     Text("亮色").tag(1)
                     Text("暗色").tag(2)
                 }
-            }
-            
-            Section {
-                NavigationLink {
-                    Text("Thanks...")
-                } label: {
-                    Text("关于")
-                }
-            }
-            
-            Section {
-                NavigationLink {
-                    Text("Thanks...")
-                } label: {
-                    Text("支持一下")
-                        .gradientForeground()
-                }
-                
             }
         }
         .navigationTitle("更多")

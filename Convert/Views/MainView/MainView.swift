@@ -1,5 +1,5 @@
 //
-//  HomeView.swift
+//  MainView.swift
 //  Convert
 //
 //  Created by Chenjun Ren on 2021-12-24.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct HomeView: View {
+struct MainView: View {
     
     @EnvironmentObject var viewModel: MasterViewModel
     
@@ -47,7 +47,7 @@ struct HomeView: View {
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
-        HomeView()
+        MainView()
     }
 }
 

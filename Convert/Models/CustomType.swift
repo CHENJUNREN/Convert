@@ -8,7 +8,6 @@
 import Foundation
 
 struct UnitInfo: Hashable, Codable {
-    
     var cName: String
     var eName: String?
     var abbr: String?
@@ -26,22 +25,20 @@ struct UnitInfo: Hashable, Codable {
 
 
 enum ConversionType: String, CaseIterable {
-    
-    case length = "长度"
-    case mass = "重量"
     case currency = "货币"
+    case length = "长度"
     case area = "面积"
     case volume = "容积"
+    case mass = "重量"
+    case speed = "速度"
     case temperature = "温度"
     case time = "时间"
     case energy = "能量"
-    case speed = "速度"
 }
 
 
 // TODO: 改的合理点
 enum ServiceError: Error, Hashable {
-    
     case systemFailure
     case fetchingFailure
     case conversionFailure
@@ -60,7 +57,6 @@ enum ServiceError: Error, Hashable {
 
 
 struct ConversionResult: Equatable {
-    
     var type: ConversionType
     var fromValue: String
     var fromUnit: UnitInfo

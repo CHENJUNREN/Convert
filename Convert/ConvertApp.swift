@@ -15,7 +15,7 @@ struct ConvertApp: App {
     
     var body: some Scene {
         WindowGroup {
-            HomeView()
+            MainView()
                 .preferredColorScheme(preferredAppearance == 1 ? .light : preferredAppearance == 2 ? .dark : nil)
                 .environmentObject(viewModel)
         }
