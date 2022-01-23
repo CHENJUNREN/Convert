@@ -32,6 +32,7 @@ struct SupportedUnitsGallery: View {
                         }
                     }
                     .padding(.horizontal)
+                    .padding(.bottom, 10)
                 }
             }
         }
@@ -74,6 +75,8 @@ struct NormalUnitCell: View {
                     Text(abbr)
                         .font(.headline)
                         .foregroundColor(.secondary)
+                } else {
+                    Divider().opacity(0)
                 }
                 
                 Spacer()

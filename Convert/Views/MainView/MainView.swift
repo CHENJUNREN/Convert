@@ -30,6 +30,7 @@ struct MainView: View {
                 }
             }
             .padding(.horizontal)
+            .padding(.bottom)
             .ignoresSafeArea(.keyboard, edges: .bottom)
             .navigationBarHidden(true)
             .navigationTitle("就是转换。")
