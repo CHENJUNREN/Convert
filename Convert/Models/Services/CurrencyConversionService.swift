@@ -115,7 +115,7 @@ extension CurrencyConversionService {
     
     private func fetchSupportedCurrencies() async throws -> [UnitInfo] {
         
-        async let (data, response) = URLSession.shared.data(from: supportedCurrenciesURL)
+        async let (data, response) = URLSession(configuration: .ephemeral).data(from: supportedCurrenciesURL)
         async let nameMapping = String(contentsOf: currencyCodeToCNameMappingFileURL)
         
         guard let httpResponse = try await response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
@@ -158,7 +158,7 @@ extension CurrencyConversionService {
     
     private func fetchConversionRate() async throws -> [String:Double] {
         
-        let (data, response) = try await URLSession.shared.data(from: conversionRateURL)
+        let (data, response) = try await URLSession(configuration: .ephemeral).data(from: conversionRateURL)
         
         guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
             throw ServiceError.fetchingFailure
