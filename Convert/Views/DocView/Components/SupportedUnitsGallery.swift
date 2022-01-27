@@ -86,10 +86,9 @@ struct NormalUnitCell: View {
                 .font(.caption)
                 .foregroundColor(.secondary)
         }
-        .padding(.vertical, 11)
-        .padding(.horizontal, 13)
+        .padding()
         .background(Color(uiColor: .secondarySystemBackground))
-        .cornerRadius(10)
+        .cornerRadius(15)
         .contextMenu {
             if let abbr = unit.abbr {
                 Button {

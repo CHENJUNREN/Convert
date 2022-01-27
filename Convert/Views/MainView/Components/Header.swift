@@ -31,7 +31,7 @@ struct Header: View {
                     .font(.title2)
             }
         }
-        .padding(.vertical)
+        .padding(.bottom)
         .task {
             try? await Task.sleep(nanoseconds: 2_000_000_000)
             gradientValue = 1.0

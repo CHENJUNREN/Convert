@@ -19,18 +19,18 @@ struct MainView: View {
             VStack(spacing: 0) {
                 Header()
                 
-                VStack(spacing: 15) {
-                    GeometryReader { geo in
-                        InputBox(focusTextField: $focusTextField, geo: geo)
-                    }
+                GeometryReader { proxy in
+                    VStack(spacing: 0) {
+                        InputBox(focusTextField: $focusTextField)
+                            .padding(.bottom)
+                            .frame(width: proxy.size.width, height: proxy.size.height / 10 * 5.5)
                         
-                    GeometryReader { geometry in
-                        DocBox(presentDocView: $presentDocView, geo: geometry)
+                        DocBox(presentDocView: $presentDocView)
+                            .frame(width: proxy.size.width, height: proxy.size.height / 10 * 4.5)
                     }
                 }
             }
-            .padding(.horizontal)
-            .padding(.bottom)
+            .padding()
             .ignoresSafeArea(.keyboard, edges: .bottom)
             .navigationBarHidden(true)
             .navigationTitle("就是转换。")
@@ -44,7 +44,6 @@ struct MainView: View {
             }
         }
     }
-    
 }
 
 struct HomeView_Previews: PreviewProvider {
