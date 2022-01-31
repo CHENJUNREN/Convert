@@ -35,7 +35,6 @@ class AreaConversionService: ConversionService, LinearConversion {
         (.mus, UnitInfo(cName: "亩")),
         (.qings, UnitInfo(cName: "顷")),
     ]
-    
 }
 
 extension UnitArea {

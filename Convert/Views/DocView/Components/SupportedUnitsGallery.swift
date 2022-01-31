@@ -48,19 +48,6 @@ struct SupportedUnitsGallery: View {
     }
 }
 
-//List(units, id: \.self) { unit in
-//    Group {
-//        if type == .currency {
-//            CurrencyUnitCell(unit: unit)
-//        } else {
-//            NormalUnitCell(unit: unit)
-//        }
-//    }
-//    .listRowSeparator(.hidden)
-//}
-//.listStyle(.plain)
-
-
 struct NormalUnitCell: View {
     let unit: UnitInfo
 
@@ -138,46 +125,3 @@ struct CurrencyUnitCell: View {
         }
     }
 }
-
-//struct NormalUnitCell: View {
-//    let unit: UnitInfo
-//
-//    var body: some View {
-//        HStack {
-//            Text(unit.cName)
-//
-//            if let eName = unit.eName {
-//                Divider()
-//                Text(eName)
-//                    .font(.caption)
-//                    .foregroundColor(.secondary)
-//            }
-//
-//            if let abbr = unit.abbr {
-//                Divider()
-//                Text(abbr)
-//                    .font(.headline)
-//            }
-//        }
-//        .contextMenu {
-//            if let abbr = unit.abbr {
-//                Button {
-//                    UIPasteboard.general.string = abbr
-//                } label: {
-//                    Label("拷贝 \"\(abbr)\"", systemImage: "arrow.right.doc.on.clipboard")
-//                }
-//            }
-//            Button {
-//                UIPasteboard.general.string = unit.cName
-//            } label: {
-//                Label("拷贝 \"\(unit.cName)\"", systemImage: "arrow.right.doc.on.clipboard")
-//            }
-//        }
-//    }
-//}
-
-
-
-
-
-

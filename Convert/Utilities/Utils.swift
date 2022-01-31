@@ -11,13 +11,11 @@ struct Utils {
     
     static let locales = Locale.availableIdentifiers.map { Locale(identifier: $0) }
     
-    
     static func currencySymbol(by currencyCode: String) -> String? {
         let locale = locales.first { $0.currencyCode == currencyCode }
         return locale?.currencySymbol
     }
 
-    
     static func countryFlag(by currencyCode: String) -> String? {
         // exception
         if currencyCode == "EUR" { return "🇪🇺" }
@@ -37,12 +35,10 @@ struct Utils {
         return String(result)
     }
     
-    
     static func fetchFileLocally(for url: URL) -> Data? {
         print("‼️‼️‼️ Fetching local data on thread \(Thread.current.description)")
         return try? Data(contentsOf: url)
     }
-    
     
     static func saveFileLocally(in url: URL, with data: Data) {
         do {
@@ -53,7 +49,6 @@ struct Utils {
             print("‼️‼️‼️ Saving data failed. Doesn't matter 😂")
         }
     }
-    
     
     static func getFileCreationDate(for url: URL) -> Date? {
         
@@ -66,7 +61,6 @@ struct Utils {
         
         return creationDate as Date
     }
-    
     
     static func isFileCreated(within numOfDays: Int, for url: URL) -> Bool? {
         if let localDataCreationDate = Self.getFileCreationDate(for: url) {

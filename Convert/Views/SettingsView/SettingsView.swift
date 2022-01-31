@@ -40,7 +40,8 @@ struct SettingsView: View {
                     .focused($focusNumPad)
                     .frame(width: 35)
                     .toolbar {
-                        ToolbarItem(id: "Dismiss", placement: .keyboard, showsByDefault: false) {
+                        ToolbarItemGroup(placement: .keyboard) {
+                            Spacer()
                             Button("完成") {
                                 focusNumPad = false
                             }

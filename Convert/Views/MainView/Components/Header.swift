@@ -16,11 +16,12 @@ struct Header: View {
 //                .font(.custom("Menlo", size: 48, relativeTo: .largeTitle))
 //                .fontWeight(.ultraLight)
             Text("就是转换。")
-                .font(.largeTitle.bold())
-                .animatableGradientForeground(fromGradient: Gradient(colors: [.pink, .accentColor]),
-                                              toGradient: Gradient(colors: [.red, .indigo]),
-                                              percentage: gradientValue)
-                .animation(.linear(duration: 5.0).delay(5.0).repeatForever(autoreverses: true), value: gradientValue)
+                .font(.largeTitle.weight(.bold))
+//                .animatableGradientForeground(fromGradient: Gradient(colors: [.pink, .accentColor]),
+//                                              toGradient: Gradient(colors: [.red, .indigo]),
+//                                              percentage: gradientValue)
+//                .animation(.linear(duration: 5.0).delay(5.0).repeatForever(autoreverses: true), value: gradientValue)
+                .gradientForeground()
             
             Spacer()
             

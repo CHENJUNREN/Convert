@@ -23,7 +23,6 @@ struct UnitInfo: Hashable, Codable {
     }
 }
 
-
 enum ConversionType: String, CaseIterable {
     case currency = "货币"
     case length = "长度"
@@ -35,7 +34,6 @@ enum ConversionType: String, CaseIterable {
     case time = "时间"
     case energy = "能量"
 }
-
 
 // TODO: 改的合理点
 enum ServiceError: Error, Hashable {
@@ -54,7 +52,6 @@ enum ServiceError: Error, Hashable {
         }
     }
 }
-
 
 struct ConversionResult: Equatable {
     var type: ConversionType

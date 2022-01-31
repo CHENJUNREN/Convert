@@ -10,11 +10,14 @@ import SwiftUI
 struct ResultPresentation: View {
     
     @AppStorage(wrappedValue: 2, "preferredResultAccuracy") var resultAccuracy
+    @AppStorage(wrappedValue: false, "usingScientificNotation") var usingScientificNotation
+    
+    @State var showCopyMessage = false
     
     let result: ConversionResult
     
     var body: some View {
-        VStack(alignment: .center, spacing: 5) {
+        VStack(alignment: .center, spacing: 0) {
             if result.type == .currency {
                 CurrencyResultPresentation(
                     value: result.fromValue,
@@ -36,26 +39,28 @@ struct ResultPresentation: View {
             Group {
                 if result.type == .currency {
                     CurrencyResultPresentation(
-                        value: result.toValue.formatted(with: resultAccuracy, using: .decimal),
+                        value: result.toValue.formatted(with: resultAccuracy,
+                                                        usingScientificNotation: usingScientificNotation),
                         code: result.toUnit.abbr!,
                         symbol: result.toUnit.symbol,
                         flag: result.toUnit.image,
                         name: result.toUnit.cName)
                 } else {
                     NormalResultPresentation(
-                        value: result.toValue.formatted(with: resultAccuracy, using: .decimal),
+                        value: result.toValue.formatted(with: resultAccuracy,
+                                                        usingScientificNotation: usingScientificNotation),
                         symbol: result.toUnit.symbol!,
                         name: result.toUnit.cName)
                 }
             }
-            .contextMenu {
-                Button {
-                    UIPasteboard.general.string = "\(result.toValue)"
-                } label: {
-                    Label("拷贝数值", systemImage: "arrow.right.doc.on.clipboard")
-                }
+            .onLongPressGesture {
+                UIPasteboard.general.string = result.toValue.formatted(with: resultAccuracy,
+                                                                       usingScientificNotation: usingScientificNotation)
+                showCopyMessage = true
+                UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
             }
         }
+        .showMessagePopUp(imageName: "checkmark.circle.fill", message: "拷贝成功", isShowing: $showCopyMessage)
     }
 }
 
@@ -66,21 +71,22 @@ struct NormalResultPresentation: View {
     
     var body: some View {
         VStack(alignment: .center, spacing: 5) {
-            HStack(alignment: .center, spacing: 5) {
+            HStack(alignment: .center, spacing: 0) {
                 Text(value)
-                    .font(.largeTitle)
+                    .font(.largeTitle.weight(.semibold))
                     .lineLimit(1)
                     .foregroundColor(.primary)
+                    .minimumScaleFactor(0.2)
                 
                 Text(symbol)
+                    .padding(.leading, 7.5)
             }
-            .font(.title)
             
             Text(name)
-                .font(.title2)
         }
+        .font(.title.weight(.light))
         .foregroundColor(.secondary)
-        .padding(10)
+        .padding()
     }
 }
 
@@ -93,46 +99,34 @@ struct CurrencyResultPresentation: View {
     
     var body: some View {
         VStack(alignment: .center, spacing: 5) {
-            HStack(alignment: .center, spacing: 5) {
+            HStack(alignment: .center, spacing: 0) {
                 if let symbol = symbol {
                     Text(symbol)
-                        .font(.title)
+                        .padding(.trailing, 2)
                 }
                 
                 Text(value)
-                    .font(.largeTitle)
+                    .font(.largeTitle.weight(.semibold))
                     .lineLimit(1)
                     .foregroundColor(.primary)
+                    .minimumScaleFactor(0.2)
+                
+                Text(code)
+                    .padding(.leading, 7.5)
             }
             
             HStack {
-                Text(code)
+                Text(name)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.2)
                 
                 if let flag = flag {
                     Text(flag)
                 }
-                
-                Text(name)
             }
-            .font(.title2)
         }
+        .font(.title.weight(.light))
         .foregroundColor(.secondary)
-        .padding(10)
-    }
-}
-
-extension Double {
-    func formatted(with accuracy: Int, using numberStyle: NumberFormatter.Style) -> String {
-        let formatter = NumberFormatter()
-        formatter.maximumFractionDigits = accuracy
-        formatter.exponentSymbol = "×10^"
-        
-        if (abs(self).isLess(than: pow(10, -Double(accuracy))) || !abs(self).isLessThanOrEqualTo(pow(10, 8))) {
-            formatter.numberStyle = .scientific
-        } else {
-            formatter.numberStyle = numberStyle
-        }
-        
-        return formatter.string(from: .init(value: self))!
+        .padding()
     }
 }

@@ -29,6 +29,8 @@ struct DocView: View {
                 .pickerStyle(.segmented)
                 .padding(.horizontal)
                 
+//                TagList(selectedConversionType: $selectedConversionType)
+                
                 if viewModel.conversionUnits != nil {
                     TabView(selection: $selectedConversionType) {
                         ForEach(ConversionType.allCases, id: \.self) { type in

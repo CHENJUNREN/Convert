@@ -14,7 +14,7 @@ struct DocBox: View {
         GeometryReader { geo in
             VStack(spacing: 20) {
                 Label("使用指南", systemImage: "doc.text.magnifyingglass")
-                .font(.title.weight(.semibold))
+                    .font(.largeTitle)
                 .gradientForeground()
                 
                 VStack(spacing: 5) {
@@ -22,7 +22,7 @@ struct DocBox: View {
                         .font(.title3)
                     Text("值 + 空格 + 单位 + 空格 + 转换单位")
                         .font(.headline)
-                    Text("例如, \"20 km cm\"")
+                    Text("例如, \"100 usd cny\"")
                         .font(.callout)
                 }
                 .foregroundColor(.secondary)
