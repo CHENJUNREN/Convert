@@ -12,9 +12,6 @@ struct Header: View {
     
     var body: some View {
         HStack {
-//            Text("Convert.")
-//                .font(.custom("Menlo", size: 48, relativeTo: .largeTitle))
-//                .fontWeight(.ultraLight)
             Text("就是转换。")
                 .font(.largeTitle.weight(.bold))
 //                .animatableGradientForeground(fromGradient: Gradient(colors: [.pink, .accentColor]),

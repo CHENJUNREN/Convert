@@ -9,9 +9,13 @@ import SwiftUI
 
 struct SettingsView: View {
     
+    @EnvironmentObject var globalState: GlobalState
+    @Environment(\.dismiss) var dismiss
+    
     @AppStorage(wrappedValue: 2, "preferredResultAccuracy") var resultAccuracy
     @AppStorage(wrappedValue: 0, "preferredAppearance") var selectedAppearance
     @AppStorage(wrappedValue: false, "usingScientificNotation") var usingScientificNotation
+    @AppStorage(wrappedValue: 0, "preferredMode") var selectedMode
     
     @FocusState<Bool> var focusNumPad
     
@@ -20,36 +24,33 @@ struct SettingsView: View {
             Section {
                 HStack(alignment: .center) {
                     Label {
-                        Text("结果最大精度: 小数点后")
+                        Text("小数点后")
                     } icon: {
                         Image(systemName: "ruler")
                             .foregroundColor(.primary)
                     }
                     
-                    TextField(value: $resultAccuracy, format: .number) {
-                        Label {
-                            Text("结果最大精度")
-                        } icon: {
-                            Image(systemName: "ruler")
-                                .foregroundColor(.primary)
-                        }
-                    }
-                    .keyboardType(.numberPad)
-                    .textFieldStyle(.roundedBorder)
-                    .multilineTextAlignment(.center)
-                    .focused($focusNumPad)
-                    .frame(width: 35)
-                    .toolbar {
-                        ToolbarItemGroup(placement: .keyboard) {
-                            Spacer()
-                            Button("完成") {
-                                focusNumPad = false
+                    TextField("结果最大精度", value: $resultAccuracy, format: .number, prompt: Text(""))
+                        .keyboardType(.numberPad)
+                        .textFieldStyle(.roundedBorder)
+                        .multilineTextAlignment(.center)
+                        .focused($focusNumPad)
+                        .frame(width: 40)
+                        .toolbar {
+                            ToolbarItemGroup(placement: .keyboard) {
+                                Spacer()
+                                Button {
+                                    focusNumPad = false
+                                } label: {
+                                    Image(systemName: "keyboard.chevron.compact.down")
+                                }
                             }
                         }
-                    }
                     
                     Text("位")
                 }
+            } header: {
+                Text("转换结果最大精度")
             }
             
             Section {
@@ -61,8 +62,29 @@ struct SettingsView: View {
                             .foregroundColor(.primary)
                     }
                 }
+            } header: {
+                Text("转换结果显示")
             } footer: {
-                Text("仅针对特别大或者特别小的数值")
+                Text("仅针对特别大或者特别小的数值，例如小于 10^-8，大于 10^8 或者小于最大精度的数值")
+            }
+            
+            Section {
+                VStack(alignment: .leading) {
+                    Label {
+                        Text("转换模式")
+                    } icon: {
+                        Image(systemName: "filemenu.and.selection")
+                            .foregroundColor(.primary)
+                    }
+                    
+                    Picker(selection: $selectedMode, label: Text("转换模式")) {
+                        Text("输入查询").tag(0)
+                        Text("1 转多").tag(1)
+                        Text("1 转 1").tag(2)
+                    }
+                    .pickerStyle(.segmented)
+                }
+                .padding(.vertical, 10)
             }
             
             Section {
@@ -85,28 +107,31 @@ struct SettingsView: View {
             }
             
             Section {
-                VStack(alignment: .leading) {
-                    HStack {
-                        Label {
-                            Text("感谢")
-                        } icon: {
-                            Image(systemName: "heart.fill")
-                                .symbolRenderingMode(.multicolor)
-                        }
-
-                        Spacer()
-                        
-                        Button {
-                            
-                        } label: {
-                            Image(systemName: "chevron.right")
-                        }
-                        .foregroundColor(.secondary)
+                Button {
+                    Task {
+                        await globalState.initServices()
+                    }
+                    dismiss()
+                } label: {
+                    Label("重新加载功能", systemImage: "arrow.clockwise")
+                        .foregroundColor(.primary)
+                }
+            }
+            
+            Section {
+                NavigationLink {
+                    More()
+                } label: {
+                    Label {
+                        Text("更多")
+                    } icon: {
+                        Image(systemName: "ellipsis")
+                            .foregroundColor(.primary)
                     }
                 }
             }
         }
-        .navigationTitle("更多")
+        .navigationTitle("设置")
         .navigationBarTitleDisplayMode(.inline)
     }
 }
