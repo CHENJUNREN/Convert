@@ -13,7 +13,7 @@ protocol ConversionService {
     
     func supportedUnits() async -> Result<[UnitInfo], ServiceError>
     
-    func convert(_ value: Double, from unit1: String, to unit2: String) async -> Result<ConversionResult, ServiceError>
+    func convert(_ value: Double, from unit1: String, to unit2: String) -> Result<ConversionResult, ServiceError>
 }
 
 
@@ -31,7 +31,7 @@ extension ConversionService where Self: LinearConversion {
         .success(units.map { entry in entry.1 })
     }
     
-    func convert(_ value: Double, from unit1: String, to unit2: String) async -> Result<ConversionResult, ServiceError> {
+    func convert(_ value: Double, from unit1: String, to unit2: String) -> Result<ConversionResult, ServiceError> {
 
         guard var fromUnit = (units.first { $0.1.cName == unit1 || $0.1.abbr == unit1.lowercased() }) else { return .failure(.conversionFailure) }
         

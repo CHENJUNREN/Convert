@@ -56,7 +56,7 @@ class ConversionProcessor {
         let taskGroupResult = await withTaskGroup(of: Result<ConversionResult, ServiceError>.self) { (group) -> Result<ConversionResult, ServiceError> in
             for service in conversionServices {
                 group.addTask {
-                    return await service.convert(value, from: splitted[1], to: splitted[2])
+                    return service.convert(value, from: splitted[1], to: splitted[2])
                 }
             }
 

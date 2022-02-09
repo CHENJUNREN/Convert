@@ -35,18 +35,14 @@ enum ConversionType: String, CaseIterable {
     case energy = "能量"
 }
 
-// TODO: 改的合理点
 enum ServiceError: Error, Hashable {
-    case systemFailure
     case fetchingFailure
     case conversionFailure
     
     var localizedDescription: String {
         switch self {
-        case .systemFailure:
-            return "系统异常, 请检查相关设置, 例如网络连接"
         case .fetchingFailure:
-            return "暂时无法使用该(转换)服务"
+            return "无法使用该转换功能"
         case .conversionFailure:
             return "无法转换"
         }

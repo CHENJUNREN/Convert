@@ -16,38 +16,31 @@ class CurrencyConversionService: ConversionService {
     let type: ConversionType = .currency
     
     // base currency: USD (1 USD = ... unit)
-    private var conversionTable: [UnitInfo:Double]?
+    private var conversionTable: [UnitInfo:Double] = [:]
     
-    func convert(_ value: Double, from unit1: String, to unit2: String) async -> Result<ConversionResult, ServiceError> {
+    func convert(_ value: Double, from unit1: String, to unit2: String) -> Result<ConversionResult, ServiceError> {
         
-        if conversionTable == nil {
-            do {
-                try await setup()
-            } catch(let err) {
-                if let err = err as? ServiceError {
-                    return .failure(err)
-                } else {
-                    return .failure(.systemFailure)
-                }
-            }
-        }
-        return convert(value: value, from: unit1, to: unit2)
+        guard !conversionTable.isEmpty else { return .failure(.conversionFailure) }
+        
+        guard let fromUnit = (conversionTable.first { $0.key.abbr! == unit1.uppercased() }?.key) else { return .failure(.conversionFailure) }
+        
+        guard let toUnit = (conversionTable.first { $0.key.abbr! == unit2.uppercased() }?.key) else { return .failure(.conversionFailure) }
+        
+        let valueToBase = value / conversionTable[fromUnit]!
+        let baseToTarget = valueToBase * conversionTable[toUnit]!
+        
+        return .success(ConversionResult(type: type, fromValue: value.description, fromUnit: fromUnit, toValue: baseToTarget, toUnit: toUnit))
     }
     
     func supportedUnits() async -> Result<[UnitInfo], ServiceError> {
-        
-        if conversionTable == nil {
+        if conversionTable.isEmpty {
             do {
                 try await setup()
-            } catch(let err) {
-                if let err = err as? ServiceError {
-                    return .failure(err)
-                } else {
-                    return .failure(.systemFailure)
-                }
+            } catch {
+                return .failure(.fetchingFailure)
             }
         }
-        return .success(conversionTable!.map { entry in entry.key })
+        return .success(conversionTable.map { entry in entry.key })
     }
 }
 
@@ -90,7 +83,12 @@ extension CurrencyConversionService {
                 }
             }
             print("‼️‼️‼️ count of conversionTable: \(conversionTable.count)")
-            self.conversionTable = conversionTable
+            
+            if conversionTable.isEmpty {
+                throw ServiceError.fetchingFailure
+            } else {
+                self.conversionTable = conversionTable
+            }
             
             // save conversion table in cache
             Task(priority: .background) {
@@ -99,14 +97,14 @@ extension CurrencyConversionService {
         } catch(let error) {
             print("‼️‼️‼️ ERROR: \(error.localizedDescription)")
             // load backup if it was created within a day
-            if let isBackupValid = Utils.isFileCreated(within: 1, for: localBackupFileURL) {
-                if isBackupValid {
-                    if let data = Utils.fetchFileLocally(for: localBackupFileURL) {
-                        conversionTable = try! JSONDecoder().decode([UnitInfo:Double].self, from: data)
-                        return
-                    }
-                }
-            }
+//            if let isBackupValid = Utils.isFileCreated(within: 1, for: localBackupFileURL) {
+//                if isBackupValid {
+//                    if let data = Utils.fetchFileLocally(for: localBackupFileURL) {
+//                        conversionTable = try! JSONDecoder().decode([UnitInfo:Double].self, from: data)
+//                        return
+//                    }
+//                }
+//            }
             // otherwise, rethrow error
             throw error
         }
@@ -123,7 +121,7 @@ extension CurrencyConversionService {
         }
         
         guard let currencies = String(data: try await data, encoding: .utf8) else {
-            throw ServiceError.systemFailure
+            throw ServiceError.fetchingFailure
         }
         
         var nameMappingList = try await nameMapping.components(separatedBy: .newlines)
@@ -144,13 +142,16 @@ extension CurrencyConversionService {
             // let eName = infoList[0]
             let code = infoList[1]
             if let possibleMatch = (nameMappingList.first { $0.starts(with: code) }) {
-                let cName = possibleMatch.components(separatedBy: ",")[1]
-                let eName = possibleMatch.components(separatedBy: ",")[2]
+                let components = possibleMatch.components(separatedBy: ",")
+                let cName = components[1]
+                let eName = components[2]
                 let currency = UnitInfo(cName: cName, eName: eName, abbr: code, symbol: Utils.currencySymbol(by: code), image: Utils.countryFlag(by: code))
                 supportedCurrencies.append(currency)
             }
         }
         print("‼️‼️‼️ count of supportedCurrencies: \(supportedCurrencies.count)")
+        
+        guard !supportedCurrencies.isEmpty else { throw ServiceError.fetchingFailure }
         
         return supportedCurrencies
     }
@@ -164,7 +165,7 @@ extension CurrencyConversionService {
             throw ServiceError.fetchingFailure
         }
         
-        guard let rawData = String(data: data, encoding: .utf8) else { throw ServiceError.systemFailure }
+        guard let rawData = String(data: data, encoding: .utf8) else { throw ServiceError.fetchingFailure }
         
         var conversionRates = rawData.components(separatedBy: .newlines)
         conversionRates = conversionRates.filter { !$0.isEmpty }
@@ -183,22 +184,9 @@ extension CurrencyConversionService {
         }
         print("‼️‼️‼️ count of conversionRateList: \(conversionRateList.count)")
         
+        guard !conversionRateList.isEmpty else { throw ServiceError.fetchingFailure }
+        
         return conversionRateList
-    }
-    
-    
-    private func convert(value: Double, from unit1: String, to unit2: String) -> Result<ConversionResult, ServiceError> {
-        
-        guard let conversionTable = self.conversionTable else { fatalError("Impossible state!") }
-        
-        guard let fromUnit = (conversionTable.first { $0.key.abbr! == unit1.uppercased() }?.key) else { return .failure(.conversionFailure) }
-        
-        guard let toUnit = (conversionTable.first { $0.key.abbr! == unit2.uppercased() }?.key) else { return .failure(.conversionFailure) }
-        
-        let valueToBase = value / conversionTable[fromUnit]!
-        let baseToTarget = valueToBase * conversionTable[toUnit]!
-        
-        return .success(ConversionResult(type: type, fromValue: value.description, fromUnit: fromUnit, toValue: baseToTarget, toUnit: toUnit))
     }
     
 //    private func fetchConversionRate() async {
