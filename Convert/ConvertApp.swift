@@ -9,15 +9,14 @@ import SwiftUI
 
 @main
 struct ConvertApp: App {
-    
     @AppStorage(wrappedValue: 0, "preferredAppearance") var preferredAppearance
-    @StateObject var viewModel = MasterViewModel()
+    @StateObject var globalState = GlobalState()
     
     var body: some Scene {
         WindowGroup {
-            MainView()
+            ContentView()
                 .preferredColorScheme(preferredAppearance == 1 ? .light : preferredAppearance == 2 ? .dark : nil)
-                .environmentObject(viewModel)
+                .environmentObject(globalState)
         }
     }
 }

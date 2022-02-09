@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct ResultPresentation: View {
-    
     @AppStorage(wrappedValue: 2, "preferredResultAccuracy") var resultAccuracy
     @AppStorage(wrappedValue: false, "usingScientificNotation") var usingScientificNotation
     

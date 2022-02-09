@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct SupportedUnitsGallery: View {
+    
+    @EnvironmentObject var globalState: GlobalState
 
     let type: ConversionType
     let units: [UnitInfo]
@@ -38,11 +40,18 @@ struct SupportedUnitsGallery: View {
         }
         .overlay {
             if error != nil {
-                GroupBox {
-                    Label(error!.localizedDescription, systemImage: "xmark.octagon")
+                VStack(spacing: 5) {
+                    Label(error!.localizedDescription, systemImage: "xmark.circle.fill")
+                        .symbolRenderingMode(.multicolor)
+                        .font(.subheadline)
+                    
+                    Text("可在设置中重新加载功能")
                         .foregroundColor(.secondary)
                         .font(.footnote)
                 }
+                .padding()
+                .background(.ultraThinMaterial)
+                .cornerRadius(15)
             }
         }
     }

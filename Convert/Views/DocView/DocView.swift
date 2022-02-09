@@ -9,7 +9,7 @@ import SwiftUI
 
 struct DocView: View {
     
-    @EnvironmentObject var viewModel: MasterViewModel
+    @EnvironmentObject var globalState: GlobalState
     @Environment(\.dismiss) var dismiss
     
     @State private var searchBarText = ""
@@ -31,10 +31,12 @@ struct DocView: View {
                 
 //                TagList(selectedConversionType: $selectedConversionType)
                 
-                if viewModel.conversionUnits != nil {
+                if !globalState.conversionUnits.isEmpty {
                     TabView(selection: $selectedConversionType) {
                         ForEach(ConversionType.allCases, id: \.self) { type in
-                            SupportedUnitsGallery(type: type, units: viewModel.conversionUnits![type] ?? [], error: viewModel.servicesError![type])
+                            SupportedUnitsGallery(type: type,
+                                                  units: filteredConversionUnits(for: selectedConversionType, by: searchBarText)[type] ?? [],
+                                                  error: globalState.servicesError[type])
                                 .tag(type)
                         }
                     }
@@ -59,18 +61,38 @@ struct DocView: View {
             .ignoresSafeArea(.container, edges: .bottom)
         }
         .searchable(text: $searchBarText, placement: .navigationBarDrawer(displayMode: .always), prompt: "搜索")
-        .onChange(of: searchBarText) { keyword in
-            viewModel.searchUnits(in: selectedConversionType, by: keyword)
-        }
-        .onChange(of: selectedConversionType) { [selectedConversionType] _ in
+        .disableAutocorrection(true)
+//        .onChange(of: searchBarText) { keyword in
+//            viewModel.searchUnits(in: selectedConversionType, by: keyword)
+//        }
+//        .onChange(of: selectedConversionType) { [selectedConversionType] _ in
+//            if !searchBarText.isEmpty {
+//                searchBarText = ""
+//                Task {
+//                    try? await Task.sleep(nanoseconds: 1_000_000_000)
+//                    viewModel.restoreUnitsList(for: selectedConversionType)
+//                }
+//            }
+//        }
+        .onChange(of: selectedConversionType) { _ in
             if !searchBarText.isEmpty {
                 searchBarText = ""
-                Task {
-                    try? await Task.sleep(nanoseconds: 1_000_000_000)
-                    viewModel.restoreUnitsList(for: selectedConversionType)
-                }
             }
         }
+    }
+    
+    func filteredConversionUnits(for type: ConversionType, by keyword: String) -> [ConversionType:[UnitInfo]] {
+        if keyword.isEmpty { return globalState.conversionUnits }
+        
+        var result = globalState.conversionUnits
+        if let units = result[type] {
+            result[type] = units.filter { unit in
+                unit.cName.localizedCaseInsensitiveContains(keyword) ||
+                unit.eName?.localizedCaseInsensitiveContains(keyword) ?? false ||
+                unit.abbr?.localizedCaseInsensitiveContains(keyword) ?? false
+            }
+        }
+        return result
     }
 }
 

@@ -9,8 +9,7 @@ import SwiftUI
 
 struct InputBox: View {
     
-    @EnvironmentObject var viewModel: MasterViewModel
-    
+    @EnvironmentObject var viewModel: QueryModeViewModel
     @State var text: String = ""
     @FocusState.Binding var focusTextField: Bool
     

@@ -14,7 +14,7 @@ struct DocBox: View {
         GeometryReader { geo in
             VStack(spacing: 20) {
                 Label("使用指南", systemImage: "doc.text.magnifyingglass")
-                    .font(.largeTitle)
+                    .font(.title)
                 .gradientForeground()
                 
                 VStack(spacing: 5) {
