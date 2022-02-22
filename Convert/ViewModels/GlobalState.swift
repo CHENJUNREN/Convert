@@ -5,7 +5,7 @@
 //  Created by Chenjun Ren on 2022/1/31.
 //
 
-import Foundation
+import SwiftUI
 import Network
 
 class GlobalState: ObservableObject {
@@ -15,20 +15,20 @@ class GlobalState: ObservableObject {
     let networkMonitor = NWPathMonitor()
     
     @Published var isConnectedToNetwork = true
-    @Published var isInitializing = false
     @Published var isLoading = false
     @Published var isErrorPresented = false
+    @Published var showCopySuccess = false
+    @Published var showLoadingSuccess = false
     
     @Published var conversionUnits: [ConversionType:[UnitInfo]] = [:]
     @Published var servicesError: [ConversionType:ServiceError] = [:]
-    
-//    var unitsBackup: [ConversionType:[UnitInfo]]?
     
     init() {
         // check network connectivity
         setupNetworkMonitor()
         // init all conversion services
         Task {
+            try? await Task.sleep(nanoseconds: 500_000_000)
             await initServices()
         }
     }
@@ -36,33 +36,30 @@ class GlobalState: ObservableObject {
     @MainActor
     func initServices() async {
         // for animating purpose
-        try? await Task.sleep(nanoseconds: 500_000_000)
-        isInitializing = true
-        isLoading = true
-        await fetchAllConversionUnits()
-        try? await Task.sleep(nanoseconds: 1_000_000_000)
-        isLoading = false
-        
-        if !servicesError.isEmpty {
-            isErrorPresented = true
-        } else {
-            isInitializing = false
+        withAnimation {
+            isLoading = true
         }
-    }
-    
-    @MainActor
-    func reloadServices() async {
-        isLoading = true
+        
         try? await Task.sleep(nanoseconds: 2_000_000_000)
         await fetchAllConversionUnits()
-        isLoading = false
         
-        if servicesError.isEmpty {
-            isInitializing = false
-            isErrorPresented = false
+        withAnimation {
+            isLoading = false
+        }
+        
+        try? await Task.sleep(nanoseconds: 100_000_000)
+        
+        if !servicesError.isEmpty {
+            UINotificationFeedbackGenerator().notificationOccurred(.error)
+            withAnimation {
+                isErrorPresented = true
+            }
         } else {
-            isInitializing = true
-            isErrorPresented = true
+            UINotificationFeedbackGenerator().notificationOccurred(.success)
+            withAnimation {
+                isErrorPresented = false
+                showLoadingSuccess = true
+            }
         }
     }
     
@@ -80,28 +77,7 @@ class GlobalState: ObservableObject {
         }
         networkMonitor.start(queue: DispatchQueue(label: "NetworkMonitor"))
     }
-    
-//    func searchUnits(in conversionType: ConversionType, by keyword: String) {
-//        // search ends, restore list from backup
-//        guard !keyword.isEmpty else {
-//            restoreUnitsList(for: conversionType)
-//            return
-//        }
-//        // restore list from backup before each search
-//        restoreUnitsList(for: conversionType)
-//        if let units = conversionUnits?[conversionType] {
-//            let lowercased = keyword.lowercased()
-//            conversionUnits?[conversionType] = units.filter { unit in
-//                unit.cName.lowercased().contains(lowercased) ||
-//                unit.eName?.lowercased().contains(lowercased) ?? false ||
-//                unit.abbr?.lowercased().contains(lowercased) ?? false
-//            }
-//        }
-//    }
-    
-//    func restoreUnitsList(for conversionType: ConversionType) {
-//        conversionUnits?[conversionType] = unitsBackup?[conversionType]
-//    }
+
     @MainActor
     func fetchAllConversionUnits() async {
         let fetchResult = await conversionProcessor.supportedConversionAndUnits()
@@ -110,16 +86,7 @@ class GlobalState: ObservableObject {
         var servicesWithError = [ConversionType: ServiceError]()
         for (type, result) in fetchResult {
             switch result {
-            case .success(var units):
-                if (type == .currency) {
-                    // sort list by currency code
-                    units = units.sorted(by: { left, right in
-                        if left.abbr!.compare(right.abbr!) == .orderedAscending {
-                            return true
-                        }
-                        return false
-                    })
-                }
+            case .success(let units):
                 servicesWithoutError[type] = units
             case .failure(let error):
                 servicesWithError[type] = error

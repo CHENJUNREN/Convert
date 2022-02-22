@@ -14,9 +14,14 @@ struct ConvertApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            HomeView()
                 .preferredColorScheme(preferredAppearance == 1 ? .light : preferredAppearance == 2 ? .dark : nil)
                 .environmentObject(globalState)
+                .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
+                .onAppear {
+                    // This suppresses contraint warnings
+                    UserDefaults.standard.setValue(false, forKey: "_UIConstraintBasedLayoutLogUnsatisfiable")
+                }
         }
     }
 }
