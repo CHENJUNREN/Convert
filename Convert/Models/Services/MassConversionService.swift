@@ -22,7 +22,7 @@ class MassConversionService: ConversionService, LinearConversion {
         (.kilograms, UnitInfo(cName: "公斤", eName: "Kilogram", abbr: "kg")),
         (.grams, UnitInfo(cName: "克", eName: "Gram", abbr: "g")),
         (.milligrams, UnitInfo(cName: "毫克", eName: "Milligram", abbr: "mg")),
-        (.pounds, UnitInfo(cName: "磅", eName: "Pound", abbr: "lbs")),
+        (.pounds, UnitInfo(cName: "磅", eName: "Pound", abbr: "lb")),
         (.ounces, UnitInfo(cName: "盎司", eName: "Ounce", abbr: "oz")),
         (.stones, UnitInfo(cName: "英石", eName: "Stone", abbr: "st")),
         (.carats, UnitInfo(cName: "克拉", eName: "Carat", abbr: "ct")),
