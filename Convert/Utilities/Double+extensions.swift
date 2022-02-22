@@ -8,20 +8,31 @@
 import Foundation
 
 extension Double {
-    func formatted(with accuracy: Int, usingScientificNotation: Bool) -> String {
+    static let sharedFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.roundingMode = .halfUp
-        formatter.groupingSeparator = ","
         formatter.exponentSymbol = "×10^"
+        return formatter
+    }()
+    
+    func formatted(with accuracy: Int, usingScientificNotation: Int, usingGroupingSeparator: Bool) -> String {
+        let formatter = Self.sharedFormatter
+        formatter.groupingSeparator = usingGroupingSeparator ? "," : ""
         formatter.maximumFractionDigits = accuracy
         
-        if usingScientificNotation && shouldUseScientificNotation(requiredAccuracy: accuracy) {
+        if usingScientificNotation == 0 {
+            if shouldUseScientificNotation(requiredAccuracy: accuracy) {
+                formatter.numberStyle = .scientific
+            } else {
+                formatter.numberStyle = .decimal
+            }
+        } else if usingScientificNotation == 1 {
             formatter.numberStyle = .scientific
         } else {
             formatter.numberStyle = .decimal
         }
         
-        return formatter.string(from: .init(value: self))!
+        return Utils.superscriptize(str: formatter.string(from: .init(value: self))!)
     }
     
     func shouldUseScientificNotation(requiredAccuracy: Int) -> Bool {

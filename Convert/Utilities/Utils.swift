@@ -69,4 +69,39 @@ struct Utils {
         }
         return nil
     }
+    
+    static func superscriptize(str: String) -> String {
+        guard str.contains("^") else { return str }
+        
+        let superscripts = [
+            "0": "\u{2070}",
+            "1": "\u{00B9}",
+            "2": "\u{00B2}",
+            "3": "\u{00B3}",
+            "4": "\u{2074}",
+            "5": "\u{2075}",
+            "6": "\u{2076}",
+            "7": "\u{2077}",
+            "8": "\u{2078}",
+            "9": "\u{2079}",
+            "+": "\u{207A}",
+            "-": "\u{207B}",
+        ]
+        
+        let signIndex = str.firstIndex(of: "^")!
+        var startIndex = str.index(after: signIndex)
+        var newStr = String(str[str.startIndex..<signIndex])
+        
+        while startIndex < str.endIndex {
+            let key = String(str[startIndex])
+            if superscripts.keys.contains(key) {
+                newStr.append(Character(superscripts[key]!))
+            } else {
+                return str
+            }
+            startIndex = str.index(after: startIndex)
+        }
+        
+        return newStr
+    }
 }
