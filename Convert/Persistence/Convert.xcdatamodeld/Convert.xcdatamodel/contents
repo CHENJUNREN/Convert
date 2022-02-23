@@ -26,6 +26,7 @@
     </entity>
     <entity name="Unit" representedClassName="Unit" syncable="YES">
         <attribute name="name" attributeType="String"/>
+        <attribute name="prefixSymbol" optional="YES" attributeType="String"/>
         <attribute name="symbol" attributeType="String"/>
         <relationship name="from" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Conversion" inverseName="from" inverseEntity="Conversion"/>
         <relationship name="to" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Conversion" inverseName="to" inverseEntity="Conversion"/>
@@ -38,6 +39,6 @@
     <elements>
         <element name="Conversion" positionX="72.51977539062494" positionY="-714.4913787841797" width="128" height="134"/>
         <element name="Record" positionX="261.0479125976562" positionY="-553.2274475097656" width="128" height="74"/>
-        <element name="Unit" positionX="-134.3444213867188" positionY="-592.38525390625" width="128" height="89"/>
+        <element name="Unit" positionX="-134.3444213867188" positionY="-592.38525390625" width="128" height="104"/>
     </elements>
 </model>

@@ -12,6 +12,25 @@ class HistoryViewModel: ObservableObject {
     
     let persistenceController = PersistenceController.shared
     
+    func generateCopyString(value: String, unit: Unit, type: ConversionType) -> String {
+        let copyAlongWithUnit = UserDefaults.standard.bool(forKey: "copyAlongWithUnit")
+        let copyUnitInChinese = UserDefaults.standard.bool(forKey: "copyUnitInChinese")
+        let currencyCopyFormat = UserDefaults.standard.integer(forKey: "currencyCopyFormat")
+        
+        if copyAlongWithUnit {
+            let code = " " + (copyUnitInChinese ? unit.name! : unit.symbol!)
+            
+            if type == .currency && (currencyCopyFormat == 0 || currencyCopyFormat == 2) {
+                let prefixSymbol = unit.prefixSymbol == nil ? "" : "\(unit.prefixSymbol!) "
+                return prefixSymbol + value + (currencyCopyFormat == 0 ? code : "")
+            } else {
+                return value + code
+            }
+        } else {
+            return value
+        }
+    }
+    
     func delete(_ conversion: Conversion) {
         let objectID = conversion.objectID
         persistenceController.enqueue { context in

@@ -41,6 +41,8 @@
 		A2BA972A2780840F00BE846E /* SupportedUnitsGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2BA97292780840F00BE846E /* SupportedUnitsGallery.swift */; };
 		A2C5C47B27A7C7AC00DF9E4F /* GlobalState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C5C47A27A7C7AC00DF9E4F /* GlobalState.swift */; };
 		A2C6611F27B796A600007CA7 /* Convert.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A2C6611D27B796A600007CA7 /* Convert.xcdatamodeld */; };
+		A2C6D27A27C5FAB0005587EA /* Unit+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C6D27827C5FAB0005587EA /* Unit+CoreDataClass.swift */; };
+		A2C6D27B27C5FAB0005587EA /* Unit+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2C6D27927C5FAB0005587EA /* Unit+CoreDataProperties.swift */; };
 		A2D1AB7F27BA53C6009CEF52 /* HistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2D1AB7E27BA53C6009CEF52 /* HistoryViewModel.swift */; };
 		A2DBA41327AAC5A100FA14E2 /* ErrorMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2DBA41227AAC5A100FA14E2 /* ErrorMessage.swift */; };
 		A2E08DF4277C53E200D1319E /* ConversionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E08DF3277C53E200D1319E /* ConversionService.swift */; };
@@ -50,8 +52,6 @@
 		A2E94D6727B8C95800A1EFE2 /* Conversion+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E94D6527B8C95800A1EFE2 /* Conversion+CoreDataProperties.swift */; };
 		A2E94D6927B8D75D00A1EFE2 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E94D6827B8D75D00A1EFE2 /* HistoryView.swift */; };
 		A2E94D6B27B8D8AC00A1EFE2 /* DismissButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E94D6A27B8D8AC00A1EFE2 /* DismissButton.swift */; };
-		A2E94D6E27B8F3E300A1EFE2 /* Unit+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E94D6C27B8F3E300A1EFE2 /* Unit+CoreDataClass.swift */; };
-		A2E94D6F27B8F3E300A1EFE2 /* Unit+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2E94D6D27B8F3E300A1EFE2 /* Unit+CoreDataProperties.swift */; };
 		A2F198842779B9B600514793 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F198832779B9B600514793 /* HomeViewModel.swift */; };
 		A2F198862779BA9F00514793 /* ConversionProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F198852779BA9F00514793 /* ConversionProcessor.swift */; };
 		A2F1988A2779BB1600514793 /* CurrencyConversionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F198892779BB1600514793 /* CurrencyConversionService.swift */; };
@@ -94,6 +94,8 @@
 		A2BA97292780840F00BE846E /* SupportedUnitsGallery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportedUnitsGallery.swift; sourceTree = "<group>"; };
 		A2C5C47A27A7C7AC00DF9E4F /* GlobalState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalState.swift; sourceTree = "<group>"; };
 		A2C6611E27B796A600007CA7 /* Convert.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Convert.xcdatamodel; sourceTree = "<group>"; };
+		A2C6D27827C5FAB0005587EA /* Unit+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Unit+CoreDataClass.swift"; sourceTree = "<group>"; };
+		A2C6D27927C5FAB0005587EA /* Unit+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Unit+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		A2D1AB7E27BA53C6009CEF52 /* HistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryViewModel.swift; sourceTree = "<group>"; };
 		A2DBA41227AAC5A100FA14E2 /* ErrorMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorMessage.swift; sourceTree = "<group>"; };
 		A2E08DF3277C53E200D1319E /* ConversionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversionService.swift; sourceTree = "<group>"; };
@@ -103,8 +105,6 @@
 		A2E94D6527B8C95800A1EFE2 /* Conversion+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Conversion+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		A2E94D6827B8D75D00A1EFE2 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		A2E94D6A27B8D8AC00A1EFE2 /* DismissButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DismissButton.swift; sourceTree = "<group>"; };
-		A2E94D6C27B8F3E300A1EFE2 /* Unit+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Unit+CoreDataClass.swift"; sourceTree = "<group>"; };
-		A2E94D6D27B8F3E300A1EFE2 /* Unit+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Unit+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		A2F198832779B9B600514793 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		A2F198852779BA9F00514793 /* ConversionProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversionProcessor.swift; sourceTree = "<group>"; };
 		A2F198892779BB1600514793 /* CurrencyConversionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyConversionService.swift; sourceTree = "<group>"; };
@@ -274,10 +274,10 @@
 		A2C6611C27B795A000007CA7 /* Persistence */ = {
 			isa = PBXGroup;
 			children = (
+				A2C6D27827C5FAB0005587EA /* Unit+CoreDataClass.swift */,
+				A2C6D27927C5FAB0005587EA /* Unit+CoreDataProperties.swift */,
 				A25B113B27BB98290060EBBB /* Record+CoreDataClass.swift */,
 				A25B113C27BB98290060EBBB /* Record+CoreDataProperties.swift */,
-				A2E94D6C27B8F3E300A1EFE2 /* Unit+CoreDataClass.swift */,
-				A2E94D6D27B8F3E300A1EFE2 /* Unit+CoreDataProperties.swift */,
 				A2E94D6427B8C95800A1EFE2 /* Conversion+CoreDataClass.swift */,
 				A2E94D6527B8C95800A1EFE2 /* Conversion+CoreDataProperties.swift */,
 				A2C6611D27B796A600007CA7 /* Convert.xcdatamodeld */,
@@ -387,7 +387,6 @@
 				A2A4C2112775B38C00F641AA /* InputBox.swift in Sources */,
 				A28170CA2786C05500A8EECD /* MassConversionService.swift in Sources */,
 				A2BA972A2780840F00BE846E /* SupportedUnitsGallery.swift in Sources */,
-				A2E94D6E27B8F3E300A1EFE2 /* Unit+CoreDataClass.swift in Sources */,
 				A2ABE3BE279AEC1D005B1BF5 /* ResultPresentation.swift in Sources */,
 				A2283D2527B64ECE003C70E1 /* MailView.swift in Sources */,
 				A2C6611F27B796A600007CA7 /* Convert.xcdatamodeld in Sources */,
@@ -400,7 +399,6 @@
 				A2F1988A2779BB1600514793 /* CurrencyConversionService.swift in Sources */,
 				A2E94D6627B8C95800A1EFE2 /* Conversion+CoreDataClass.swift in Sources */,
 				A2F198842779B9B600514793 /* HomeViewModel.swift in Sources */,
-				A2E94D6F27B8F3E300A1EFE2 /* Unit+CoreDataProperties.swift in Sources */,
 				A292C7A52781CB79008970C5 /* TemperatureConversionService.swift in Sources */,
 				A2E94D6B27B8D8AC00A1EFE2 /* DismissButton.swift in Sources */,
 				A2E08DF6277CA8EB00D1319E /* Utils.swift in Sources */,
@@ -413,6 +411,7 @@
 				A2E1DCA227B20930002E69CB /* AcknowledgmentView.swift in Sources */,
 				A25EE6AA27A2E382008D46BF /* TagList.swift in Sources */,
 				A25EE6AC27A307C6008D46BF /* Double+extensions.swift in Sources */,
+				A2C6D27A27C5FAB0005587EA /* Unit+CoreDataClass.swift in Sources */,
 				A2A4C2052775ABDB00F641AA /* HomeView.swift in Sources */,
 				A215CC5427BFE287004315AF /* SlideInMessage.swift in Sources */,
 				A2836B23279713C000F39D49 /* SpeedConversionService.swift in Sources */,
@@ -426,6 +425,7 @@
 				A2C5C47B27A7C7AC00DF9E4F /* GlobalState.swift in Sources */,
 				A2A4C2032775ABDB00F641AA /* ConvertApp.swift in Sources */,
 				A2DBA41327AAC5A100FA14E2 /* ErrorMessage.swift in Sources */,
+				A2C6D27B27C5FAB0005587EA /* Unit+CoreDataProperties.swift in Sources */,
 				A2F198862779BA9F00514793 /* ConversionProcessor.swift in Sources */,
 				A25EE6A827A291D0008D46BF /* View+extensions.swift in Sources */,
 				A2E08DF4277C53E200D1319E /* ConversionService.swift in Sources */,

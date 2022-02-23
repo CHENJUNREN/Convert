@@ -56,13 +56,15 @@ class HomeViewModel: ObservableObject {
             let fromUnit = Unit(
                 context: context,
                 name: result.fromUnit.cName,
-                symbol: result.type == .currency ? result.fromUnit.abbr! : result.fromUnit.symbol!
+                symbol: result.type == .currency ? result.fromUnit.abbr! : result.fromUnit.symbol!,
+                prefixSymbol: result.type == .currency ? result.fromUnit.symbol : nil
             )
             
             let toUnit = Unit(
                 context: context,
                 name: result.toUnit.cName,
-                symbol: result.type == .currency ? result.toUnit.abbr! : result.toUnit.symbol!
+                symbol: result.type == .currency ? result.toUnit.abbr! : result.toUnit.symbol!,
+                prefixSymbol: result.type == .currency ? result.toUnit.symbol : nil
             )
             
             let conversion = Conversion(

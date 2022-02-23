@@ -2,7 +2,7 @@
 //  Unit+CoreDataProperties.swift
 //  Convert
 //
-//  Created by Chenjun Ren on 2022/2/13.
+//  Created by Chenjun Ren on 2022/2/23.
 //
 //
 
@@ -18,15 +18,17 @@ extension Unit {
 
     @NSManaged public var name: String?
     @NSManaged public var symbol: String?
+    @NSManaged public var prefixSymbol: String?
     @NSManaged public var from: NSSet?
     @NSManaged public var to: NSSet?
     
-    convenience init(context: NSManagedObjectContext, name: String, symbol: String) {
+    convenience init(context: NSManagedObjectContext, name: String, symbol: String, prefixSymbol: String?) {
         self.init(context: context)
         self.name = name
         self.symbol = symbol
+        self.prefixSymbol = prefixSymbol
     }
-
+    
 }
 
 // MARK: Generated accessors for from

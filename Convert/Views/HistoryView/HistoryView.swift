@@ -65,10 +65,6 @@ struct HistoryView: View {
             if !records.isEmpty {
                 List {
                     Text("左滑可以拷贝+删除当前条目🤭")
-                        .foregroundColor(.white)
-                        .listRowBackground(
-                            LinearGradient(colors: [.accentColor, .cyan], startPoint: .topLeading, endPoint: .bottomTrailing)
-                        )
                     
                     ForEach(records, id: \.self) { record in
                         Section {
@@ -86,7 +82,7 @@ struct HistoryView: View {
                                 EntryCell(fromValue: fromValue, fromUnit: fromUnit, toValue: toValue, toUnit: toUnit)
                                     .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                                         Button {
-                                            let pastedString = copyAlongWithUnit ? toValue + " " + toUnit : toValue
+                                            let pastedString = viewModel.generateCopyString(value: toValue, unit: conversion.to!, type: ConversionType(rawValue: record.conversionType!)!)
                                             UIPasteboard.general.string = pastedString
                                             UINotificationFeedbackGenerator().notificationOccurred(.success)
                                         } label: {
@@ -138,8 +134,8 @@ struct EntryCell: View {
             }
             
             Image(systemName: "arrow.right.circle.fill")
-                .symbolRenderingMode(.hierarchical)
-                .foregroundColor(.secondary)
+                .symbolRenderingMode(.multicolor)
+                .foregroundColor(.accentColor)
                 .padding(.horizontal)
             
             GeometryReader { proxy in
