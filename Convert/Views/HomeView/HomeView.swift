@@ -11,9 +11,6 @@ struct HomeView: View {
     @EnvironmentObject var globalState: GlobalState
     @StateObject var viewModel = HomeViewModel()
     
-    @State var selectedConversionType: ConversionType = .currency
-    @State var showDocViewNotice = true
-    
     @FocusState var focusTextField: Bool
     @State var presentDocView = false
     @State var presentHistoryView = false
@@ -46,7 +43,7 @@ struct HomeView: View {
                     Image(systemName: "checkmark.circle.fill")
                         .symbolRenderingMode(.multicolor)
                 }
-                .navigationTitle("就是转换。")
+                .navigationTitle("")
                 .navigationBarHidden(true)
                 .ignoresSafeArea(.keyboard, edges: .bottom)
                 .onTapGesture {
@@ -56,7 +53,7 @@ struct HomeView: View {
                 }
                 .sheet(isPresented: $presentDocView) {
                     SheetView {
-                        DocView(selectedConversionType: $selectedConversionType, showNotice: $showDocViewNotice)
+                        DocView()
                     }
                 }
                 .sheet(isPresented: $presentHistoryView) {

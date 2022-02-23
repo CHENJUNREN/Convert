@@ -11,12 +11,11 @@ struct DocView: View {
     @EnvironmentObject var globalState: GlobalState
     
     @State private var searchBarText = ""
-    @Binding var selectedConversionType: ConversionType
-    @Binding var showNotice: Bool
+    @State var selectedConversionType: ConversionType = .currency
     
     var body: some View {
         VStack(spacing: 15) {
-            NoticeBox(showNotice: $showNotice)
+            NoticeBox()
             
             typePicker
             
@@ -73,7 +72,6 @@ struct DocView: View {
         if let units = result[type] {
             result[type] = units.filter { unit in
                 unit.cName.localizedCaseInsensitiveContains(keyword) ||
-//                unit.eName?.localizedCaseInsensitiveContains(keyword) ?? false ||
                 unit.abbr?.localizedCaseInsensitiveContains(keyword) ?? false ||
                 unit.image?.localizedCaseInsensitiveContains(keyword) ?? false
             }
@@ -84,7 +82,6 @@ struct DocView: View {
 
 struct DocView_Previews: PreviewProvider {
     static var previews: some View {
-        DocView(selectedConversionType: Binding<ConversionType>.constant(.currency),
-                showNotice: Binding<Bool>.constant(true))
+        DocView()
     }
 }

@@ -40,7 +40,7 @@ struct InputBox: View {
                                     }
                                     // show tips in textfield
                                     showTips = true
-                                    try? await Task.sleep(nanoseconds: 5_000_000_000)
+                                    try? await Task.sleep(nanoseconds: 10_000_000_000)
                                     showTips = false
                                 }
                             }

@@ -21,6 +21,9 @@ struct SettingsView: View {
     
     @FocusState<Bool> var focusNumPad
     @State var showMailView = false
+    @State var showDocView = false
+    @State var showHistoryView = false
+    @State var showAckView = false
     
     var body: some View {
         List {
@@ -34,7 +37,7 @@ struct SettingsView: View {
             
             appAppearanceControl
             
-            conversionHistory
+            presentDocsControl
             
             otherControls
         }
@@ -44,56 +47,19 @@ struct SettingsView: View {
             MailView(data: .init(subject: "App 使用反馈", recipient: "convertApp@outlook.com", message: ""))
                 .ignoresSafeArea()
         }
-    }
-    
-    var copyControl: some View {
-        Section {
-            Toggle(isOn: $copyAlongWithUnit) {
-                Label("拷贝结果时带上单位", systemImage: "arrow.right.doc.on.clipboard")
-                    .foregroundColor(.primary)
+        .sheet(isPresented: $showDocView) {
+            SheetView {
+                DocView()
             }
-            
-            if copyAlongWithUnit {
-                VStack(alignment: .leading) {
-                    Label("单位样式", systemImage: "character.book.closed")
-                        .foregroundColor(.primary)
-                    
-                    Picker("选择单位的样式", selection: $copyUnitInChinese) {
-                        Text("100 m").tag(false)
-                        Text("100 米").tag(true)
-                    }
-                    .pickerStyle(.segmented)
-                }
-                .padding(.vertical, 10)
-                
-                VStack(alignment: .leading) {
-                    Label("货币拷贝格式", systemImage: "yensign.circle")
-                        .foregroundColor(.primary)
-                    
-                    Picker("货币拷贝格式", selection: $currencyCopyFormat) {
-                        Text("¥ 100 \(copyUnitInChinese ? "人民币" : "CNY")").tag(0)
-                        Text("100 \(copyUnitInChinese ? "人民币" : "CNY")").tag(1)
-                        Text("¥ 100").tag(2)
-                    }
-                    .pickerStyle(.segmented)
-                }
-                .padding(.vertical, 10)
-            }
-        } header: {
-            Text("结果拷贝")
         }
-
-    }
-    
-    var conversionHistory: some View {
-        Section {
-            // TODO: DOCVIEW here
-            
-            NavigationLink {
+        .sheet(isPresented: $showHistoryView) {
+            SheetView {
                 HistoryView()
-            } label: {
-                Label("转换记录", systemImage: "clock")
-                    .symbolRenderingMode(.multicolor)
+            }
+        }
+        .sheet(isPresented: $showAckView) {
+            SheetView {
+                AcknowledgmentView()
             }
         }
     }
@@ -145,13 +111,13 @@ struct SettingsView: View {
             
             VStack(alignment: .leading) {
                 Label {
-                    Text("使用科学计数法")
+                    Text("科学计数法")
                 } icon: {
                     Image(systemName: "rectangle.and.pencil.and.ellipsis")
                         .foregroundColor(.primary)
                 }
                 
-                Picker("使用科学计数法", selection: $usingScientificNotation) {
+                Picker("科学计数法", selection: $usingScientificNotation) {
                     Text("部分使用").tag(0)
                     Text("使用").tag(1)
                     Text("不使用").tag(2)
@@ -168,6 +134,44 @@ struct SettingsView: View {
             }
             .foregroundColor(.secondary)
             .symbolRenderingMode(.hierarchical)
+        }
+    }
+    
+    var copyControl: some View {
+        Section {
+            Toggle(isOn: $copyAlongWithUnit) {
+                Label("拷贝时带上单位", systemImage: "arrow.right.doc.on.clipboard")
+                    .foregroundColor(.primary)
+            }
+            
+            if copyAlongWithUnit {
+                VStack(alignment: .leading) {
+                    Label("单位样式", systemImage: "character.book.closed")
+                        .foregroundColor(.primary)
+                    
+                    Picker("选择单位的样式", selection: $copyUnitInChinese) {
+                        Text("100 m").tag(false)
+                        Text("100 米").tag(true)
+                    }
+                    .pickerStyle(.segmented)
+                }
+                .padding(.vertical, 10)
+                
+                VStack(alignment: .leading) {
+                    Label("货币拷贝格式", systemImage: "yensign.circle")
+                        .foregroundColor(.primary)
+                    
+                    Picker("选择货币拷贝格式", selection: $currencyCopyFormat) {
+                        Text("¥ 100 \(copyUnitInChinese ? "人民币" : "CNY")").tag(0)
+                        Text("100 \(copyUnitInChinese ? "人民币" : "CNY")").tag(1)
+                        Text("¥ 100").tag(2)
+                    }
+                    .pickerStyle(.segmented)
+                }
+                .padding(.vertical, 10)
+            }
+        } header: {
+            Text("结果拷贝")
         }
     }
     
@@ -210,15 +214,34 @@ struct SettingsView: View {
         }
     }
     
+    var presentDocsControl: some View {
+        Section {
+            Button {
+                showDocView = true
+            } label: {
+                Label("使用指南", systemImage: "doc.text.magnifyingglass")
+                    .foregroundColor(.primary)
+            }
+
+            Button {
+                showHistoryView = true
+            } label: {
+                Label("转换记录", systemImage: "clock")
+                    .symbolRenderingMode(.multicolor)
+                    .foregroundColor(.primary)
+            }
+        }
+    }
+
     var otherControls: some View {
         Section {
             Button {
                 showMailView = true
             } label: {
                 Label("反馈意见", systemImage: "envelope")
+                    .foregroundColor(MailView.canBePresented ? .primary : .secondary)
             }
             .disabled(!MailView.canBePresented)
-            .foregroundColor(MailView.canBePresented ? .primary : .secondary)
             
 //            Button {
 //
@@ -227,11 +250,12 @@ struct SettingsView: View {
 //                    .foregroundColor(.primary)
 //            }
             
-            NavigationLink {
-                AcknowledgmentView()
+            Button {
+                showAckView = true
             } label: {
                 Label("致谢", systemImage: "heart.fill")
                     .symbolRenderingMode(.multicolor)
+                    .foregroundColor(.primary)
             }
         }
     }

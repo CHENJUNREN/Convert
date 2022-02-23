@@ -54,7 +54,7 @@ struct AcknowledgmentView: View {
             }
             .padding(.bottom, 5)
             
-            Text("特别感谢 **朱彬旖** 这几年来对我的帮助，间接促使我完成了这一款对我来说真正意义上的独立开发软件，感谢🙏")
+            Text("反正写在最后应该没有人会看吧，特别感谢 **朱彬旖** 这些年来的陪伴和帮助，虽然最近发生了很多不愉快的事情，还是非常感谢🙏")
         }
         .font(.subheadline)
         .padding()
