@@ -55,6 +55,7 @@
 		A2F198842779B9B600514793 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F198832779B9B600514793 /* HomeViewModel.swift */; };
 		A2F198862779BA9F00514793 /* ConversionProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F198852779BA9F00514793 /* ConversionProcessor.swift */; };
 		A2F1988A2779BB1600514793 /* CurrencyConversionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2F198892779BB1600514793 /* CurrencyConversionService.swift */; };
+		A2F9F82627C74DE100A4C475 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A2F9F82527C74DE100A4C475 /* Launch Screen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -108,6 +109,7 @@
 		A2F198832779B9B600514793 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		A2F198852779BA9F00514793 /* ConversionProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversionProcessor.swift; sourceTree = "<group>"; };
 		A2F198892779BB1600514793 /* CurrencyConversionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyConversionService.swift; sourceTree = "<group>"; };
+		A2F9F82527C74DE100A4C475 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -228,6 +230,7 @@
 				A2C6611C27B795A000007CA7 /* Persistence */,
 				A23B227227785134005326CA /* Utilities */,
 				A2A4C2062775ABDD00F641AA /* Assets.xcassets */,
+				A2F9F82527C74DE100A4C475 /* Launch Screen.storyboard */,
 				A25D06342777650A0093249D /* Info.plist */,
 				A2A4C2082775ABDD00F641AA /* Preview Content */,
 			);
@@ -373,6 +376,7 @@
 			files = (
 				A2A4C20A2775ABDD00F641AA /* Preview Assets.xcassets in Resources */,
 				A2668DBB278F3CD900F2BF4A /* currencyCodeToName.csv in Resources */,
+				A2F9F82627C74DE100A4C475 /* Launch Screen.storyboard in Resources */,
 				A2A4C2072775ABDD00F641AA /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -568,7 +572,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "就是转换";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
@@ -600,7 +604,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "就是转换";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
