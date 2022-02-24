@@ -37,6 +37,7 @@ class CurrencyConversionService: ConversionService {
             do {
                 try await setup()
             } catch {
+                print("‼️‼️‼️ ERROR: \(error.localizedDescription)")
                 return .failure(.fetchingFailure)
             }
         }
@@ -70,43 +71,38 @@ extension CurrencyConversionService {
     
     private func setup() async throws {
         
+        // load backup if it was created within today
+        if let isBackupValid = Utils.isFileCreatedToday(fileURL: localBackupFileURL),
+           isBackupValid,
+           let data = Utils.fetchFileLocally(for: localBackupFileURL)
+        {
+            conversionTable = try! JSONDecoder().decode([UnitInfo:Double].self, from: data)
+            return
+        }
+        
+        // otherwise, fetch data from remote server
         async let supportedCurrenies = fetchSupportedCurrencies()
         async let conversionRates = fetchConversionRate()
         
-        do {
-            let (currencies, rates) = try await (supportedCurrenies, conversionRates)
-            
-            var conversionTable = [UnitInfo:Double]()
-            currencies.forEach { unit in
-                if let rate = rates[unit.abbr!] {
-                    conversionTable[unit] = rate
-                }
+        let (currencies, rates) = try await (supportedCurrenies, conversionRates)
+        
+        var conversionTable = [UnitInfo:Double]()
+        currencies.forEach { currency in
+            if let rate = rates[currency.abbr!] {
+                conversionTable[currency] = rate
             }
-            print("‼️‼️‼️ count of conversionTable: \(conversionTable.count)")
-            
-            if conversionTable.isEmpty {
-                throw ServiceError.fetchingFailure
-            } else {
-                self.conversionTable = conversionTable
-            }
-            
-            // save conversion table in cache
-            Task(priority: .background) {
-                Utils.saveFileLocally(in: localBackupFileURL, with: try! JSONEncoder().encode(self.conversionTable))
-            }
-        } catch(let error) {
-            print("‼️‼️‼️ ERROR: \(error.localizedDescription)")
-            // load backup if it was created within a day
-//            if let isBackupValid = Utils.isFileCreated(within: 1, for: localBackupFileURL) {
-//                if isBackupValid {
-//                    if let data = Utils.fetchFileLocally(for: localBackupFileURL) {
-//                        conversionTable = try! JSONDecoder().decode([UnitInfo:Double].self, from: data)
-//                        return
-//                    }
-//                }
-//            }
-            // otherwise, rethrow error
-            throw error
+        }
+        print("‼️‼️‼️ count of conversionTable: \(conversionTable.count)")
+        
+        if conversionTable.isEmpty {
+            throw ServiceError.fetchingFailure
+        } else {
+            self.conversionTable = conversionTable
+        }
+        
+        // save conversion table in cache
+        Task(priority: .background) {
+            Utils.saveFileLocally(in: localBackupFileURL, with: try! JSONEncoder().encode(self.conversionTable))
         }
     }
     

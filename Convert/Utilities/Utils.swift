@@ -62,10 +62,10 @@ struct Utils {
         return creationDate as Date
     }
     
-    static func isFileCreated(within numOfDays: Int, for url: URL) -> Bool? {
-        if let localDataCreationDate = Self.getFileCreationDate(for: url) {
-            let timeIntervalInDays = -localDataCreationDate.timeIntervalSinceNow / (24 * 60 * 60)
-            return timeIntervalInDays <= Double(numOfDays) ? true : false
+    static func isFileCreatedToday(fileURL: URL) -> Bool? {
+        if let createdAt = Self.getFileCreationDate(for: fileURL) {
+            let startofToday = Calendar.current.startOfDay(for: .now)
+            return createdAt >= startofToday
         }
         return nil
     }
