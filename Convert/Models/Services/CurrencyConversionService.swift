@@ -49,7 +49,7 @@ class CurrencyConversionService: ConversionService {
 extension CurrencyConversionService {
     
     private var conversionRateURL: URL {
-        URL(string: "https://api.exchangerate.host/latest?format=tsv&base=USD")!
+        URL(string: "https://api.exchangerate.host/latest?format=tsv")!
     }
     
     private var supportedCurrenciesURL: URL {
@@ -72,11 +72,12 @@ extension CurrencyConversionService {
     private func setup() async throws {
         
         // load backup if it was created within today
-        if let isBackupValid = Utils.isFileCreatedToday(fileURL: localBackupFileURL),
+        if let isBackupValid = Utils.isFileCreatedRecently(fileURL: localBackupFileURL),
            isBackupValid,
-           let data = Utils.fetchFileLocally(for: localBackupFileURL)
+           let data = Utils.fetchFileLocally(for: localBackupFileURL),
+           let conversionData = try? JSONDecoder().decode([UnitInfo:Double].self, from: data)
         {
-            conversionTable = try! JSONDecoder().decode([UnitInfo:Double].self, from: data)
+            conversionTable = conversionData
             return
         }
         

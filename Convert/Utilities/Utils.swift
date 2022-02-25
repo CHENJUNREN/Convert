@@ -62,10 +62,14 @@ struct Utils {
         return creationDate as Date
     }
     
-    static func isFileCreatedToday(fileURL: URL) -> Bool? {
+    static func isFileCreatedRecently(fileURL: URL) -> Bool? {
         if let createdAt = Self.getFileCreationDate(for: fileURL) {
-            let startofToday = Calendar.current.startOfDay(for: .now)
-            return createdAt >= startofToday
+            print("‼️‼️‼️ File was created at \(createdAt.formatted(date: .numeric, time: .complete))")
+            let now = Date.now
+            let startofToday = Calendar.current.startOfDay(for: now)
+            let timeDiffInHours = now.timeIntervalSince(createdAt) / 3600
+            print("‼️‼️‼️ File was created \(timeDiffInHours.formatted()) hours ago")
+            return createdAt >= startofToday && timeDiffInHours <= 5
         }
         return nil
     }
