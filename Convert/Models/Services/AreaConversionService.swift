@@ -38,7 +38,6 @@ class AreaConversionService: ConversionService, LinearConversion {
 }
 
 extension UnitArea {
-    
     static let qings = UnitArea(symbol: "顷", converter: UnitConverterLinear(coefficient: 10000*100/15))
     
     static let mus = UnitArea(symbol: "亩", converter: UnitConverterLinear(coefficient: 10000/15))

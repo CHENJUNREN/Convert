@@ -41,7 +41,6 @@ class LengthConversionService: ConversionService, LinearConversion {
 }
 
 extension UnitLength {
-    
     static let lis = UnitLength(symbol: "里", converter: UnitConverterLinear(coefficient: 500))
     
     static let zhangs = UnitLength(symbol: "丈", converter: UnitConverterLinear(coefficient: 10/3))

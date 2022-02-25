@@ -33,7 +33,6 @@ class MassConversionService: ConversionService, LinearConversion {
 }
 
 extension UnitMass {
-    
     static let jins = UnitMass(symbol: "斤", converter: UnitConverterLinear(coefficient: 1/2))
     
     static let liangs = UnitMass(symbol: "两", converter: UnitConverterLinear(coefficient: 1/20))
