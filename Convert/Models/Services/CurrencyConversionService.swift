@@ -1,5 +1,5 @@
 //
-//  CurrencyConvertService.swift
+//  CurrencyConversionService.swift
 //  Convert
 //
 //  Created by Chenjun Ren on 2021-12-27.
@@ -11,12 +11,11 @@ class CurrencyConversionService: ConversionService {
 
     static let shared = CurrencyConversionService()
     
-    private init() {}
-    
     let type: ConversionType = .currency
     
-    // base currency: USD (1 USD = ... unit)
     private var conversionTable: [UnitInfo:Double] = [:]
+    
+    private init() {}
     
     func convert(_ value: Double, from unit1: String, to unit2: String) -> Result<ConversionResult, ServiceError> {
         
@@ -45,18 +44,11 @@ class CurrencyConversionService: ConversionService {
     }
 }
 
-
 extension CurrencyConversionService {
     
-    private var conversionRateURL: URL {
-        URL(string: "https://api.exchangerate.host/latest?format=tsv")!
-    }
+    private var baseCurrency: String { "eur" }
     
-    private var supportedCurrenciesURL: URL {
-        URL(string: "https://api.exchangerate.host/symbols?format=csv")!
-    }
-    
-    private var currencyCodeToCNameMappingFileURL: URL {
+    private var currencyCodeToNameMappingFileURL: URL {
         Bundle.main.url(forResource: "currencyCodeToName", withExtension: "csv")!
     }
     
@@ -64,10 +56,6 @@ extension CurrencyConversionService {
         let cachesDirectory = try! FileManager.default.url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
         return cachesDirectory.appendingPathComponent("conversionTable.data")
     }
-}
-
-
-extension CurrencyConversionService {
     
     private func setup() async throws {
         
@@ -82,10 +70,10 @@ extension CurrencyConversionService {
         }
         
         // otherwise, fetch data from remote server
-        async let supportedCurrenies = fetchSupportedCurrencies()
+        async let supportedCurrencies = fetchSupportedCurrencies()
         async let conversionRates = fetchConversionRate()
         
-        let (currencies, rates) = try await (supportedCurrenies, conversionRates)
+        let (currencies, rates) = try await (supportedCurrencies, conversionRates)
         
         var conversionTable = [UnitInfo:Double]()
         currencies.forEach { currency in
@@ -103,48 +91,33 @@ extension CurrencyConversionService {
         
         // save conversion table in cache
         Task(priority: .background) {
-            Utils.saveFileLocally(in: localBackupFileURL, with: try! JSONEncoder().encode(self.conversionTable))
+            if let data = try? JSONEncoder().encode(self.conversionTable) {
+                Utils.saveFileLocally(in: localBackupFileURL, with: data)
+            }
         }
     }
+}
+
+extension CurrencyConversionService {
     
+    private var conversionRateURL: URL {
+        URL(string: "https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/\(baseCurrency).json")!
+    }
     
-    private func fetchSupportedCurrencies() async throws -> [UnitInfo] {
+    private func fetchSupportedCurrencies() throws -> [UnitInfo] {
         
-        async let (data, response) = URLSession(configuration: .ephemeral).data(from: supportedCurrenciesURL)
-        async let nameMapping = String(contentsOf: currencyCodeToCNameMappingFileURL)
+        let nameMapping = try String(contentsOf: currencyCodeToNameMappingFileURL)
         
-        guard let httpResponse = try await response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
-            throw ServiceError.fetchingFailure
-        }
+        let nameMappingList = nameMapping
+            .components(separatedBy: .newlines)
+            .filter { !$0.isEmpty }
         
-        guard let currencies = String(data: try await data, encoding: .utf8) else {
-            throw ServiceError.fetchingFailure
-        }
-        
-        var nameMappingList = try await nameMapping.components(separatedBy: .newlines)
-        nameMappingList = nameMappingList.filter { !$0.isEmpty }
-        print("‼️‼️‼️ count of nameMappingList: \(nameMappingList.count)")
-        
-        var currenciesList = currencies.components(separatedBy: .newlines)
-        currenciesList = currenciesList.filter { !$0.isEmpty }
-        // remove header of csv file
-        currenciesList.removeFirst()
-        print("‼️‼️‼️ count of currenciesList: \(currenciesList.count)")
-        
-        var supportedCurrencies: [UnitInfo] = []
-        currenciesList.forEach { ele in
-            // remove quotation mark in csv file
-            let element = ele.replacingOccurrences(of: "\"", with: "")
-            let infoList = element.components(separatedBy: ",")
-            // let eName = infoList[0]
-            let code = infoList[1]
-            if let possibleMatch = (nameMappingList.first { $0.starts(with: code) }) {
-                let components = possibleMatch.components(separatedBy: ",")
-                let cName = components[1]
-                let eName = components[2]
-                let currency = UnitInfo(cName: cName, eName: eName, abbr: code, symbol: Utils.currencySymbol(by: code), image: Utils.countryFlag(by: code))
-                supportedCurrencies.append(currency)
-            }
+        let supportedCurrencies = nameMappingList.map { (entry) -> UnitInfo in
+            let components = entry.components(separatedBy: ",")
+            let code = components[0]
+            let cName = components[1]
+            let eName = components[2]
+            return UnitInfo(cName: cName, eName: eName, abbr: code, symbol: Utils.currencySymbol(by: code), image: Utils.countryFlag(by: code))
         }
         print("‼️‼️‼️ count of supportedCurrencies: \(supportedCurrencies.count)")
         
@@ -152,7 +125,6 @@ extension CurrencyConversionService {
         
         return supportedCurrencies
     }
-    
     
     private func fetchConversionRate() async throws -> [String:Double] {
         
@@ -162,22 +134,14 @@ extension CurrencyConversionService {
             throw ServiceError.fetchingFailure
         }
         
-        guard let rawData = String(data: data, encoding: .utf8) else { throw ServiceError.fetchingFailure }
-        
-        var conversionRates = rawData.components(separatedBy: .newlines)
-        conversionRates = conversionRates.filter { !$0.isEmpty }
-        // remove header of csv file
-        conversionRates.removeFirst()
-        
-        let numberFormatter = NumberFormatter()
-        numberFormatter.decimalSeparator = ","
-        
-        var conversionRateList = [String:Double]()
-        conversionRates.forEach { entry in
-            let infoList = entry.components(separatedBy: .whitespaces)
-            let currencyCode = infoList[0]
-            let rateToUSD = numberFormatter.number(from: infoList[1])?.doubleValue ?? 0
-            conversionRateList[currencyCode] = rateToUSD
+        var conversionRateList = [String : Double]()
+        if let json = try JSONSerialization.jsonObject(with: data) as? [String : Any] {
+            if let dics = json[baseCurrency] as? [String : Double] {
+                let temp = dics.map { entry in
+                    (key: entry.key.uppercased(), value: entry.value)
+                }
+                conversionRateList = Dictionary(uniqueKeysWithValues: temp)
+            }
         }
         print("‼️‼️‼️ count of conversionRateList: \(conversionRateList.count)")
         
@@ -185,66 +149,4 @@ extension CurrencyConversionService {
         
         return conversionRateList
     }
-    
-//    private func fetchConversionRate() async {
-//
-//        var data: Data?
-//        var localDataExistedButInvalid = false
-//
-//        // check if data was previous saved in local file system and is not outdated (tolerance: 1 days)
-//        if let result = Utils.isFileCreated(within: 1, for: Self.localFileName) {
-//            if result == true {
-//                print("‼️‼️‼️ Local data is valid, fetching local data...")
-//                data = Utils.fetchFileLocally(for: Self.localFileName)
-//            } else {
-//                localDataExistedButInvalid = true
-//            }
-//        }
-//
-//        // check if fetching local data is successful, otherwise fetch from remote server
-//        if data == nil {
-//            print("‼️‼️‼️ Local data doesen't exit or is outdated, or fetching failed, fetching data from remote server...")
-//            let url = URL(string: Self.baseURL + "/single" + "?currency=CNY&appkey=\(Self.apikey)")!
-//            do {
-//                let (dataFromServer, response) = try await URLSession.shared.data(from: url)
-//                if (response as? HTTPURLResponse)?.statusCode != 200 {
-//                    throw ServiceError.fetchingFailed
-//                }
-//
-//                var result = parseJsonData(dataFromServer)
-//                print(result.count)
-//                if result.isEmpty {
-//                    throw ServiceError.fetchingFailed
-//                }
-//                // adding base currency to result
-//                result[UnitInfo(cName: "人民币", abbr: "CNY", symbol: Utils.currencySymbol(by: "CNY"), image: Utils.countryFlag(by: "CNY"))] = 1
-//
-//                print("‼️‼️‼️ Fetching remote data succeeded! Saving data to local file system...")
-//                Utils.saveFileLocally(for: Self.localFileName, with: try! JSONEncoder().encode(result))
-//                conversionTable = result
-//                status = .online
-//                return
-//            } catch(let err) {
-//                // if local data exists but is invalid, try fetch it, otherwise return error
-//                if localDataExistedButInvalid {
-//                    data = Utils.fetchFileLocally(for: Self.localFileName)
-//                }
-//                if data == nil {
-//                    if let error = err as? ServiceError, error == .fetchingFailed {
-//                        status = .offline(.fetchingFailed)
-//                        return
-//                    } else {
-//                        status = .offline(.systemFailed)
-//                        return
-//                    }
-//                }
-//            }
-//        }
-//
-//        // data != nil
-//        print("‼️‼️‼️ Fetching local data succeeded!")
-//        conversionTable = try! JSONDecoder().decode([UnitInfo:Double].self, from: data!)
-//        status = .online
-//
-//    }
 }
