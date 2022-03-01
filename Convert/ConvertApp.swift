@@ -9,13 +9,17 @@ import SwiftUI
 
 @main
 struct ConvertApp: App {
-    @AppStorage(wrappedValue: 0, "preferredAppearance") var preferredAppearance
     @StateObject var globalState = GlobalState()
+    
+    @AppStorage("colorScheme") var selectedColorScheme = ColorScheme.unspecified
     
     var body: some Scene {
         WindowGroup {
             HomeView()
-                .preferredColorScheme(preferredAppearance == 1 ? .light : preferredAppearance == 2 ? .dark : nil)
+                .preferredColorScheme(
+                    selectedColorScheme == .light ? .light :
+                        selectedColorScheme == .dark ? .dark : nil
+                )
                 .environmentObject(globalState)
                 .environment(\.managedObjectContext, PersistenceController.shared.container.viewContext)
                 .onAppear {

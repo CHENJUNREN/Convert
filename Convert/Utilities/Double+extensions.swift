@@ -12,6 +12,7 @@ extension Double {
         let formatter = NumberFormatter()
         formatter.roundingMode = .halfUp
         formatter.exponentSymbol = "×10^"
+        formatter.decimalSeparator = "."
         return formatter
     }()
     
@@ -21,6 +22,7 @@ extension Double {
         formatter.usesGroupingSeparator = false
         formatter.maximumFractionDigits = 20
         formatter.numberStyle = .decimal
+        formatter.decimalSeparator = "."
         return formatter
     }()
     
@@ -28,18 +30,23 @@ extension Double {
         return Self.calculationFormatter.string(from: NSNumber(value: self))!
     }
     
-    func formatted(with accuracy: Int, usingScientificNotation: Int, usingGroupingSeparator: Bool) -> String {
+    func formatted(
+        with accuracy: Int,
+        scientificNotationMode: ScientificNotationMode,
+        usesGroupingSeparator: Bool
+    ) -> String
+    {
         let formatter = Self.conversionFormatter
-        formatter.groupingSeparator = usingGroupingSeparator ? "," : ""
+        formatter.groupingSeparator = usesGroupingSeparator ? "," : ""
         formatter.maximumFractionDigits = accuracy
         
-        if usingScientificNotation == 0 {
+        if scientificNotationMode == .partiallyEnabled {
             if shouldUseScientificNotation(requiredAccuracy: accuracy) {
                 formatter.numberStyle = .scientific
             } else {
                 formatter.numberStyle = .decimal
             }
-        } else if usingScientificNotation == 1 {
+        } else if scientificNotationMode == .enabled {
             formatter.numberStyle = .scientific
         } else {
             formatter.numberStyle = .decimal

@@ -10,10 +10,10 @@ import SwiftUI
 struct HistoryView: View {
     @Environment(\.managedObjectContext) var moc
     
-    @AppStorage(wrappedValue: 2, "preferredResultAccuracy") var resultAccuracy
-    @AppStorage(wrappedValue: 0, "usingScientificNotation") var usingScientificNotation
-    @AppStorage(wrappedValue: true, "usingGroupingSeparator") var usingGroupingSeparator
-    @AppStorage(wrappedValue: false, "showUnitInChinese") var showUnitInChinese
+    @AppStorage("resultAccuracy") var resultAccuracy = 2
+    @AppStorage("usesGroupingSeparator") var usesGroupingSeparator = true
+    @AppStorage("scientificNotationMode") var scientificNotationMode = ScientificNotationMode.partiallyEnabled
+    @AppStorage("showUnitInChinese") var showUnitInChinese = false
     
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Record.updatedAt, ascending: false)],
@@ -67,8 +67,8 @@ struct HistoryView: View {
                                 let toValue = conversion.toValue
                                     .formatted(
                                         with: resultAccuracy,
-                                        usingScientificNotation: usingScientificNotation,
-                                        usingGroupingSeparator: usingGroupingSeparator
+                                        scientificNotationMode: scientificNotationMode,
+                                        usesGroupingSeparator: usesGroupingSeparator
                                     )
                                 let fromValue = conversion.fromValue ?? ""
                                 let fromUnit = showUnitInChinese ? conversion.from?.name ?? "" : conversion.from?.symbol ?? ""

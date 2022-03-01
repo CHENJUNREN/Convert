@@ -11,13 +11,13 @@ struct SettingsView: View {
     @EnvironmentObject var globalState: GlobalState
     @Environment(\.dismiss) var dismiss
     
-    @AppStorage(wrappedValue: 2, "preferredResultAccuracy") var resultAccuracy
-    @AppStorage(wrappedValue: 0, "preferredAppearance") var selectedAppearance
-    @AppStorage(wrappedValue: 0, "usingScientificNotation") var usingScientificNotation
-    @AppStorage(wrappedValue: true, "usingGroupingSeparator") var usingGroupingSeparator
-    @AppStorage(wrappedValue: false, "copyAlongWithUnit") var copyAlongWithUnit
-    @AppStorage(wrappedValue: false, "copyUnitInChinese") var copyUnitInChinese
-    @AppStorage(wrappedValue: 0, "currencyCopyFormat") var currencyCopyFormat
+    @AppStorage("colorScheme") var selectedColorScheme = ColorScheme.unspecified
+    @AppStorage("resultAccuracy") var resultAccuracy = 2
+    @AppStorage("usesGroupingSeparator") var usesGroupingSeparator = true
+    @AppStorage("scientificNotationMode") var selectedScientificNotationMode = ScientificNotationMode.partiallyEnabled
+    @AppStorage("copyAlongWithUnit") var copyAlongWithUnit = false
+    @AppStorage("copyUnitInChinese") var copyUnitInChinese = false
+    @AppStorage("currencyCopyFormat") var currencyCopyFormat = CurrencyCopyFormat.complete
     
     @FocusState<Bool> var focusNumPad
     @State var showMailView = false
@@ -102,27 +102,19 @@ struct SettingsView: View {
     
     var resultDisplayControl: some View {
         Section {
-            Toggle(isOn: $usingGroupingSeparator) {
-                Label {
-                    Text("使用千位分隔符")
-                } icon: {
-                    Image(systemName: "figure.stand.line.dotted.figure.stand")
-                        .foregroundColor(.primary)
-                }
+            Toggle(isOn: $usesGroupingSeparator) {
+                Label("使用千位分隔符", systemImage: "figure.stand.line.dotted.figure.stand")
+                    .foregroundColor(.primary)
             }
             
             VStack(alignment: .leading) {
-                Label {
-                    Text("科学计数法")
-                } icon: {
-                    Image(systemName: "rectangle.and.pencil.and.ellipsis")
-                        .foregroundColor(.primary)
-                }
+                Label("科学计数法", systemImage: "rectangle.and.pencil.and.ellipsis")
+                    .foregroundColor(.primary)
                 
-                Picker("科学计数法", selection: $usingScientificNotation) {
-                    Text("部分使用").tag(0)
-                    Text("使用").tag(1)
-                    Text("不使用").tag(2)
+                Picker("科学计数法", selection: $selectedScientificNotationMode) {
+                    Text("部分使用").tag(ScientificNotationMode.partiallyEnabled)
+                    Text("使用").tag(ScientificNotationMode.enabled)
+                    Text("不使用").tag(ScientificNotationMode.disabled)
                 }
                 .pickerStyle(.segmented)
             }
@@ -131,7 +123,7 @@ struct SettingsView: View {
             Text("结果展示")
         } footer: {
             VStack(alignment: .leading, spacing: 5) {
-                Label("在整数部分每隔 3 位插入分隔符", systemImage: "1.circle.fill")
+                Label("在整数部分每隔 3 位插入分隔符(,)", systemImage: "1.circle.fill")
                 Label("**部分使用**模式下，仅针对大于 \(Utils.superscriptize(str: "10^8"))，小于 \(Utils.superscriptize(str: "10^-8")) 或者小于最大精度的数值使用科学计数法显示", systemImage: "2.circle.fill")
             }
             .symbolRenderingMode(.hierarchical)
@@ -163,9 +155,12 @@ struct SettingsView: View {
                         .foregroundColor(.primary)
                     
                     Picker("选择货币拷贝格式", selection: $currencyCopyFormat) {
-                        Text("¥ 100 \(copyUnitInChinese ? "人民币" : "CNY")").tag(0)
-                        Text("100 \(copyUnitInChinese ? "人民币" : "CNY")").tag(1)
-                        Text("¥ 100").tag(2)
+                        Text("¥ 100 \(copyUnitInChinese ? "人民币" : "CNY")")
+                            .tag(CurrencyCopyFormat.complete)
+                        Text("100 \(copyUnitInChinese ? "人民币" : "CNY")")
+                            .tag(CurrencyCopyFormat.withCurrencyCodeOrName)
+                        Text("¥ 100")
+                            .tag(CurrencyCopyFormat.withCurrencySymbol)
                     }
                     .pickerStyle(.segmented)
                 }
@@ -203,17 +198,13 @@ struct SettingsView: View {
     var appAppearanceControl: some View {
         Section {
             VStack(alignment: .leading) {
-                Label {
-                    Text("外观")
-                } icon: {
-                    Image(systemName: "photo.on.rectangle.angled")
-                        .foregroundColor(.primary)
-                }
+                Label("外观", systemImage: "photo.on.rectangle.angled")
+                    .foregroundColor(.primary)
                 
-                Picker("外观", selection: $selectedAppearance) {
-                    Text("系统").tag(0)
-                    Text("亮色").tag(1)
-                    Text("暗色").tag(2)
+                Picker("外观", selection: $selectedColorScheme) {
+                    Text("系统").tag(ColorScheme.unspecified)
+                    Text("亮色").tag(ColorScheme.light)
+                    Text("暗色").tag(ColorScheme.dark)
                 }
                 .pickerStyle(.segmented)
             }

@@ -56,3 +56,21 @@ struct ConversionResult: Equatable {
     var toValue: Double
     var toUnit: UnitInfo
 }
+
+enum ColorScheme: Int {
+    case unspecified
+    case light
+    case dark
+}
+
+enum ScientificNotationMode: Int {
+    case partiallyEnabled
+    case enabled
+    case disabled
+}
+
+enum CurrencyCopyFormat: Int {
+    case complete
+    case withCurrencyCodeOrName
+    case withCurrencySymbol
+}

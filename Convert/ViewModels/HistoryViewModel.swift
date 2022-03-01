@@ -19,10 +19,11 @@ class HistoryViewModel: ObservableObject {
         
         if copyAlongWithUnit {
             let code = " " + (copyUnitInChinese ? unit.name! : unit.symbol!)
-            
-            if type == .currency && (currencyCopyFormat == 0 || currencyCopyFormat == 2) {
+            if type == .currency && (currencyCopyFormat == CurrencyCopyFormat.complete.rawValue
+                                     || currencyCopyFormat == CurrencyCopyFormat.withCurrencySymbol.rawValue)
+            {
                 let prefixSymbol = unit.prefixSymbol == nil ? "" : "\(unit.prefixSymbol!) "
-                return prefixSymbol + value + (currencyCopyFormat == 0 ? code : "")
+                return prefixSymbol + value + (currencyCopyFormat == CurrencyCopyFormat.complete.rawValue ? code : "")
             } else {
                 return value + code
             }

@@ -15,7 +15,6 @@ class HomeViewModel: ObservableObject {
     
     @Published var conversionResult: ConversionResult?
     @Published var conversionError: ServiceError?
-    
     @Published var textFieldInput = ""
     
     func fetchConversionResult() async {
@@ -37,12 +36,14 @@ class HomeViewModel: ObservableObject {
         
         if copyAlongWithUnit {
             if type == .currency {
-                if currencyCopyFormat == 0 || currencyCopyFormat == 2 {
+                let code = " " + (copyUnitInChinese ? unit.cName : unit.abbr!)
+                if currencyCopyFormat == CurrencyCopyFormat.complete.rawValue
+                    || currencyCopyFormat == CurrencyCopyFormat.withCurrencySymbol.rawValue
+                {
                     let symbol = unit.symbol == nil ? "" : "\(unit.symbol!) "
-                    let code = " " + (copyUnitInChinese ? unit.cName : unit.abbr!)
-                    return symbol + value + (currencyCopyFormat == 0 ? code : "")
+                    return symbol + value + (currencyCopyFormat == CurrencyCopyFormat.complete.rawValue ? code : "")
                 } else {
-                    return value + " \(copyUnitInChinese ? unit.cName : unit.abbr!)"
+                    return value + code
                 }
             } else {
                 return value + " \(copyUnitInChinese ? unit.cName : unit.symbol!)"

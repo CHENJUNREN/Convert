@@ -11,9 +11,9 @@ struct ResultPresentation: View {
     @EnvironmentObject var globalState: GlobalState
     @EnvironmentObject var viewModel: HomeViewModel
     
-    @AppStorage(wrappedValue: 2, "preferredResultAccuracy") var resultAccuracy
-    @AppStorage(wrappedValue: 0, "usingScientificNotation") var usingScientificNotation
-    @AppStorage(wrappedValue: true, "usingGroupingSeparator") var usingGroupingSeparator
+    @AppStorage("resultAccuracy") var resultAccuracy = 2
+    @AppStorage("usesGroupingSeparator") var usesGroupingSeparator = true
+    @AppStorage("scientificNotationMode") var scientificNotationMode = ScientificNotationMode.partiallyEnabled
     
     let result: ConversionResult
     
@@ -51,8 +51,8 @@ struct ResultPresentation: View {
     var toValueView: some View {
         let formattedToValue = result.toValue.formatted(
             with: resultAccuracy,
-            usingScientificNotation: usingScientificNotation,
-            usingGroupingSeparator: usingGroupingSeparator
+            scientificNotationMode: scientificNotationMode,
+            usesGroupingSeparator: usesGroupingSeparator
         )
         
         Group {
