@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import MathExpression
 
 class CalculatorViewModel: ObservableObject {
     
@@ -49,7 +48,7 @@ class CalculatorViewModel: ObservableObject {
                     .replacingOccurrences(of: "×", with: "*")
                     .replacingOccurrences(of: "÷", with: "/")
         do {
-            let mathExpression = try MathExpression(ex, transformation: nil)
+            let mathExpression = try MathExpression(ex)
             return mathExpression.evaluate().formattedForCalculation()
         } catch {
             print("❗️❗️❗️ Calculation error: \(error.localizedDescription)")
