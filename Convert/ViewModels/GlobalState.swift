@@ -11,7 +11,6 @@ import Network
 class GlobalState: ObservableObject {
     
     let conversionProcessor: ConversionProcessor = .shared
-    
     let networkMonitor = NWPathMonitor()
     
     @Published var isConnectedToNetwork = true
@@ -20,8 +19,8 @@ class GlobalState: ObservableObject {
     @Published var showCopySuccess = false
     @Published var showLoadingSuccess = false
     
-    @Published var conversionUnits: [ConversionType:[UnitInfo]] = [:]
-    @Published var servicesError: [ConversionType:ServiceError] = [:]
+    @Published var conversionUnits: [ConversionType : [UnitInfo]] = [:]
+    @Published var servicesError: [ConversionType : ServiceError] = [:]
     
     init() {
         // check network connectivity
@@ -40,7 +39,7 @@ class GlobalState: ObservableObject {
             isLoading = true
         }
         
-        try? await Task.sleep(nanoseconds: 2_000_000_000)
+        try? await Task.sleep(nanoseconds: 1_000_000_000)
         await fetchAllConversionUnits()
         
         withAnimation {

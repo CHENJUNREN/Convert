@@ -8,15 +8,28 @@
 import Foundation
 
 extension Double {
-    static let sharedFormatter: NumberFormatter = {
+    static let conversionFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.roundingMode = .halfUp
         formatter.exponentSymbol = "×10^"
         return formatter
     }()
     
+    static let calculationFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.roundingMode = .halfUp
+        formatter.usesGroupingSeparator = false
+        formatter.maximumFractionDigits = 20
+        formatter.numberStyle = .decimal
+        return formatter
+    }()
+    
+    func formattedForCalculation() -> String {
+        return Self.calculationFormatter.string(from: NSNumber(value: self))!
+    }
+    
     func formatted(with accuracy: Int, usingScientificNotation: Int, usingGroupingSeparator: Bool) -> String {
-        let formatter = Self.sharedFormatter
+        let formatter = Self.conversionFormatter
         formatter.groupingSeparator = usingGroupingSeparator ? "," : ""
         formatter.maximumFractionDigits = accuracy
         
@@ -32,7 +45,7 @@ extension Double {
             formatter.numberStyle = .decimal
         }
         
-        return Utils.superscriptize(str: formatter.string(from: .init(value: self))!)
+        return Utils.superscriptize(str: formatter.string(from: NSNumber(value: self))!)
     }
     
     func shouldUseScientificNotation(requiredAccuracy: Int) -> Bool {

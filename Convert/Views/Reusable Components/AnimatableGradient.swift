@@ -1,34 +1,13 @@
 //
-//  View+extensions.swift
+//  AnimatableGradient.swift
 //  Convert
 //
-//  Created by Chenjun Ren on 2022-01-27.
+//  Created by Chenjun Ren on 2022/2/25.
 //
 
 import SwiftUI
 
-extension View {
-    func animatableGradientForeground(fromGradient: Gradient, toGradient: Gradient, percentage: CGFloat) -> some View {
-        modifier(AnimatableGradientModifier(percentage: percentage, fromGradient: fromGradient, toGradient: toGradient))
-    }
-    
-    func gradientForeground() -> some View {
-        self.overlay {
-            LinearGradient(colors: [.pink, .accentColor], startPoint: .topLeading, endPoint: .bottomTrailing)
-        }
-        .mask(self)
-    }
-    
-    func slideInMessage<V: View>(isPresented: Binding<Bool>, message: String, autoDismiss: Bool = true, icon: @escaping () -> V) -> some View {
-        modifier(SlideInMessage(isPresented: isPresented, message: message, autoDismiss: autoDismiss, icon: icon))
-    }
-    
-    func bottomSheet<V: View>(isPresented: Binding<Bool>, content: @escaping () -> V, onDimiss: (() -> Void)? = nil) -> some View {
-        modifier(BottomSheet(isPresented: isPresented, block: content, dismiss: onDimiss))
-    }
-}
-
-struct AnimatableGradientModifier: Animatable, ViewModifier {
+struct AnimatableGradient: Animatable, ViewModifier {
     var percentage: CGFloat = 0.0
     let fromGradient: Gradient
     let toGradient: Gradient
@@ -63,5 +42,11 @@ struct AnimatableGradientModifier: Animatable, ViewModifier {
         let b = (cc1[2] + (cc2[2] - cc1[2]) * percentage)
 
         return Color(red: Double(r), green: Double(g), blue: Double(b))
+    }
+}
+
+extension View {
+    func animatableGradientForeground(fromGradient: Gradient, toGradient: Gradient, percentage: CGFloat) -> some View {
+        modifier(AnimatableGradient(percentage: percentage, fromGradient: fromGradient, toGradient: toGradient))
     }
 }

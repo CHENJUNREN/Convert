@@ -63,9 +63,8 @@ struct ErrorMessage: View {
             .modifier(ShakeEffect(shakes: invalidAttempts * 2))
             .animation(.default, value: invalidAttempts)
         }
-        .padding(40)
+        .padding(.bottom, 40)
         .frame(maxWidth: .infinity)
-        .background(.ultraThinMaterial)
         .animation(.default, value: globalState.isConnectedToNetwork)
     }
 }

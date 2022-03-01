@@ -8,20 +8,17 @@
 import SwiftUI
 
 struct InputBox: View {
-    
     @EnvironmentObject var viewModel: HomeViewModel
     
-    @State var text: String = ""
     @FocusState.Binding var focusTextField: Bool
-    @Binding var showHistoryView: Bool
     @State var showTips = false
     @State var invalidAttempts = 0
     
     var body: some View {
         GeometryReader { geo in
             VStack(spacing: 0) {
-                ZStack(alignment: .trailing) {
-                    TextField(textFieldPrompt(), text: $text)
+                ZStack {
+                    TextField(textFieldPrompt(), text: $viewModel.textFieldInput)
                         .multilineTextAlignment(.center)
                         .disableAutocorrection(true)
                         .textInputAutocapitalization(.never)
@@ -29,14 +26,14 @@ struct InputBox: View {
                         .focused($focusTextField)
                         .padding(.horizontal)
                         .onSubmit {
-                            if !text.isEmpty {
+                            if !viewModel.textFieldInput.isEmpty {
                                 Task {
-                                    await viewModel.fetchConversionResult(for: text)
-                                    text = ""
+                                    await viewModel.fetchConversionResult()
                                     // generate error haptic feeback
                                     if viewModel.conversionError != nil {
                                         UINotificationFeedbackGenerator().notificationOccurred(.error)
                                         invalidAttempts += 1
+                                        focusTextField = true
                                     }
                                     // show tips in textfield
                                     showTips = true
@@ -45,17 +42,6 @@ struct InputBox: View {
                                 }
                             }
                         }
-                    
-                    if viewModel.conversionResult != nil {
-                        Button {
-                            showHistoryView = true
-                        } label: {
-                            Image(systemName: "clock")
-                                .symbolRenderingMode(.multicolor)
-                                .padding(.horizontal, 10)
-                        }
-                        .transition(.scale.animation(.spring().delay(0.5)))
-                    }
                 }
                 .font(viewModel.conversionResult == nil ? .largeTitle : .title3)
                 .frame(width: geo.size.width, height: viewModel.conversionResult == nil ? geo.size.height : (geo.size.height - 10) / 8)

@@ -32,14 +32,14 @@ struct AcknowledgmentView: View {
             }
             .padding(.bottom, 5)
             
-            Text("货币转换数据由 **exchangerate.host** 提供")
-            Text("Special thanks to **exchangerate.host** for providing currency conversion data")
+            Text("货币转换数据由 **Fawaz Ahmed** 提供")
+            Text("Special thanks to **Fawaz Ahmed** for providing the currency conversion data")
                 .foregroundColor(.secondary)
-            Text("[https://exchangerate.host/](https://exchangerate.host/)")
+            Text("[fawazahmed0@GitHub](https://github.com/fawazahmed0/currency-api)")
         }
         .font(.footnote)
         .padding()
-        .background(Color(uiColor: .secondarySystemBackground))
+        .background(.regularMaterial)
         .cornerRadius(15)
     }
     
@@ -54,7 +54,7 @@ struct AcknowledgmentView: View {
             }
             .padding(.bottom, 5)
             
-            Text("反正写在最后应该没有人会看吧，特别感谢 **朱彬旖** 这些年来的陪伴和帮助，虽然最近发生了很多不愉快的事情，还是非常感谢🙏")
+            Text("反正写在最后应该没有人会看吧，特别感谢 **朱彬旖** 这些年来的陪伴和帮助，虽然最近发生了很多不愉快的事情，但还是非常感谢🙏")
         }
         .font(.subheadline)
         .padding()
@@ -66,7 +66,7 @@ struct AcknowledgmentView: View {
     }
 }
 
-struct More_Previews: PreviewProvider {
+struct AcknowledgmentView_Previews: PreviewProvider {
     static var previews: some View {
         AcknowledgmentView()
     }

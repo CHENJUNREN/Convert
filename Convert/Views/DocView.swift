@@ -10,8 +10,9 @@ import SwiftUI
 struct DocView: View {
     @EnvironmentObject var globalState: GlobalState
     
+    @AppStorage("selectedConversionType") var selectedConversionType = ConversionType.currency
+    
     @State private var searchBarText = ""
-    @State var selectedConversionType: ConversionType = .currency
     
     var body: some View {
         VStack(spacing: 15) {

@@ -25,7 +25,7 @@ struct SlideInMessage<V: View>: ViewModifier {
                     }
                     .padding(.vertical, 10)
                     .padding(.horizontal)
-                    .background(.ultraThinMaterial)
+                    .background(.regularMaterial)
                     .clipShape(Capsule())
                     .padding(.top, 5)
                     .transition(.move(edge: .top).combined(with: .opacity).animation(.default))
@@ -41,5 +41,11 @@ struct SlideInMessage<V: View>: ViewModifier {
                     }
                 }
             }
+    }
+}
+
+extension View {
+    func slideInMessage<V: View>(isPresented: Binding<Bool>, message: String, autoDismiss: Bool = true, icon: @escaping () -> V) -> some View {
+        modifier(SlideInMessage(isPresented: isPresented, message: message, autoDismiss: autoDismiss, icon: icon))
     }
 }

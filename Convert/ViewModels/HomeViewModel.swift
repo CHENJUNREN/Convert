@@ -16,14 +16,17 @@ class HomeViewModel: ObservableObject {
     @Published var conversionResult: ConversionResult?
     @Published var conversionError: ServiceError?
     
-    func fetchConversionResult(for query: String) async {
+    @Published var textFieldInput = ""
+    
+    func fetchConversionResult() async {
         conversionError = nil
-        switch await conversionProcessor.conversionResult(for: query) {
+        switch await conversionProcessor.conversionResult(for: textFieldInput) {
         case .failure(let error):
             conversionError = error
         case .success(let result):
             conversionResult = result
             persist(result)
+            textFieldInput = ""
         }
     }
     

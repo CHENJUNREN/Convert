@@ -13,7 +13,6 @@ struct HistoryView: View {
     @AppStorage(wrappedValue: 2, "preferredResultAccuracy") var resultAccuracy
     @AppStorage(wrappedValue: 0, "usingScientificNotation") var usingScientificNotation
     @AppStorage(wrappedValue: true, "usingGroupingSeparator") var usingGroupingSeparator
-    @AppStorage(wrappedValue: false, "copyAlongWithUnit") var copyAlongWithUnit
     @AppStorage(wrappedValue: false, "showUnitInChinese") var showUnitInChinese
     
     @FetchRequest(
@@ -30,7 +29,7 @@ struct HistoryView: View {
             .navigationTitle("转换记录")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .navigation) {
+                ToolbarItem(placement: .navigationBarLeading) {
                     Menu {
                         Button(role: .destructive) {
                             showWarning = true
@@ -55,8 +54,6 @@ struct HistoryView: View {
                 Button("确认", role: .destructive) {
                     viewModel.deleteHistory()
                 }
-                Button("取消", role: .cancel) {
-                }
             }
     }
     
@@ -64,8 +61,6 @@ struct HistoryView: View {
         ZStack {
             if !records.isEmpty {
                 List {
-                    Text("左滑可以拷贝+删除当前条目🤭")
-                    
                     ForEach(records, id: \.self) { record in
                         Section {
                             ForEach(record.unwrappedConversions, id: \.id) { conversion in

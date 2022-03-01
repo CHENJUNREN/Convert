@@ -62,6 +62,18 @@ struct SettingsView: View {
                 AcknowledgmentView()
             }
         }
+        .toolbar {
+            ToolbarItemGroup(placement: .keyboard) {
+                Spacer()
+                Button {
+                    focusNumPad = false
+                } label: {
+                    Label("完成", systemImage: "keyboard.chevron.compact.down")
+                        .foregroundColor(.primary)
+                        .labelStyle(.titleAndIcon)
+                }
+            }
+        }
     }
     
     var resultAccuracyControl: some View {
@@ -80,16 +92,6 @@ struct SettingsView: View {
                     .multilineTextAlignment(.center)
                     .focused($focusNumPad)
                     .frame(width: 40)
-                    .toolbar {
-                        ToolbarItemGroup(placement: .keyboard) {
-                            Spacer()
-                            Button {
-                                focusNumPad = false
-                            } label: {
-                                Image(systemName: "keyboard.chevron.compact.down")
-                            }
-                        }
-                    }
                 
                 Text("位")
             }
@@ -132,7 +134,6 @@ struct SettingsView: View {
                 Label("在整数部分每隔 3 位插入分隔符", systemImage: "1.circle.fill")
                 Label("**部分使用**模式下，仅针对大于 \(Utils.superscriptize(str: "10^8"))，小于 \(Utils.superscriptize(str: "10^-8")) 或者小于最大精度的数值使用科学计数法显示", systemImage: "2.circle.fill")
             }
-            .foregroundColor(.secondary)
             .symbolRenderingMode(.hierarchical)
         }
     }
@@ -172,6 +173,12 @@ struct SettingsView: View {
             }
         } header: {
             Text("结果拷贝")
+        } footer: {
+            VStack(alignment: .leading, spacing: 5) {
+                Label("长按首页转换结果可以拷贝", systemImage: "1.circle.fill")
+                Label("在**转换记录**页面中，左滑条目也可以拷贝", systemImage: "2.circle.fill")
+            }
+            .symbolRenderingMode(.hierarchical)
         }
     }
     
@@ -189,7 +196,7 @@ struct SettingsView: View {
                     .foregroundColor(.primary)
             }
         } footer: {
-            Text("重新加载那些需要联网使用的转换类型")
+            Text("重新加载需要联网使用的转换类型")
         }
     }
     
