@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import MathExpression
 
 class CalculatorViewModel: ObservableObject {
     

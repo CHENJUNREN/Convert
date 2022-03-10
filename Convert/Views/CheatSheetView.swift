@@ -1,5 +1,5 @@
 //
-//  DocView.swift
+//  CheatSheetView.swift
 //  Convert
 //
 //  Created by Chenjun Ren on 2021-12-26.
@@ -7,17 +7,15 @@
 
 import SwiftUI
 
-struct DocView: View {
+struct CheatSheetView: View {
     @EnvironmentObject var globalState: GlobalState
     
-    @AppStorage("selectedConversionType") var selectedConversionType = ConversionType.currency
+    @Binding var selectedConversionType: ConversionType
     
     @State private var searchBarText = ""
     
     var body: some View {
-        VStack(spacing: 15) {
-            NoticeBox()
-            
+        VStack(spacing: 0) {
             typePicker
             
             if !globalState.conversionUnits.isEmpty {
@@ -28,10 +26,8 @@ struct DocView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
-        .navigationTitle("使用指南")
-        .navigationBarTitleDisplayMode(.inline)
         .ignoresSafeArea(.container, edges: .bottom)
-        .searchable(text: $searchBarText, placement: .navigationBarDrawer(displayMode: .always), prompt: "搜索")
+        .searchable(text: $searchBarText, placement: .navigationBarDrawer(displayMode: .always), prompt: "搜索(中英文或 Emoji 国旗)")
         .disableAutocorrection(true)
         .textInputAutocapitalization(.never)
         .onChange(of: selectedConversionType) { _ in
@@ -50,12 +46,13 @@ struct DocView: View {
         }
         .pickerStyle(.segmented)
         .padding(.horizontal)
+        .padding(.bottom)
     }
     
     var unitsTabView: some View {
         TabView(selection: $selectedConversionType) {
             ForEach(ConversionType.allCases, id: \.self) { type in
-                SupportedUnitsGallery(
+                UnitGallery(
                     type: type,
                     units: filteredConversionUnits(for: selectedConversionType, by: searchBarText)[type] ?? [],
                     error: globalState.servicesError[type]
@@ -78,11 +75,5 @@ struct DocView: View {
             }
         }
         return result
-    }
-}
-
-struct DocView_Previews: PreviewProvider {
-    static var previews: some View {
-        DocView()
     }
 }

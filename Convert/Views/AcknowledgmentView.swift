@@ -9,11 +9,13 @@ import SwiftUI
 
 struct AcknowledgmentView: View {
     
+    @Environment(\.openURL) var openURL
+    
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
-            VStack(spacing: 25) {
+            VStack(spacing: 0) {
                 first
-                
+                    .padding(.bottom)
                 second
             }
             .padding()
@@ -23,28 +25,49 @@ struct AcknowledgmentView: View {
     }
     
     var first: some View {
-        VStack(alignment: .leading, spacing: 5) {
+        VStack(alignment: .leading, spacing: 10) {
             HStack {
-                Label("技术支持", systemImage: "gear.circle.fill")
+                Label("第三方 SDK & API", systemImage: "gear.circle.fill")
                     .symbolRenderingMode(.multicolor)
                     .font(.headline)
                 Spacer()
             }
-            .padding(.bottom, 5)
             
-            Text("货币转换数据由 **Fawaz Ahmed** 提供")
-            Text("Special thanks to **Fawaz Ahmed** for providing the currency conversion data")
-                .foregroundColor(.secondary)
-            Text("[fawazahmed0@GitHub](https://github.com/fawazahmed0/currency-api)")
+            Text("Special thanks to the software developers, **Fawaz Ahmed** and **Pere Daniel Prieto**.🤝")
+                .font(.subheadline)
+            
+            VStack(alignment: .leading, spacing: 5) {
+                HStack {
+                    Text("currency-api")
+                    
+                    Button {
+                        openURL(URL(string: "https://github.com/fawazahmed0/currency-api")!)
+                    } label: {
+                        Image(systemName: "arrow.right.circle.fill")
+                            .opacity(0.5)
+                    }
+                }
+                
+                HStack {
+                    Text("MathExpression")
+                    
+                    Button {
+                        openURL(URL(string: "https://github.com/peredaniel/MathExpression")!)
+                    } label: {
+                        Image(systemName: "arrow.right.circle.fill")
+                            .opacity(0.5)
+                    }
+                }
+            }
+            .font(.subheadline.bold().monospaced())
+            .padding(.leading, 5)
         }
-        .font(.footnote)
-        .padding()
-        .background(.regularMaterial)
-        .cornerRadius(15)
+        .clippedToRoundedRectangle(background: .linearGradient(colors: [.indigo, .purple], startPoint: .topLeading, endPoint: .bottomTrailing))
+        .foregroundColor(.white)
     }
     
     var second: some View {
-        VStack(alignment: .leading, spacing: 5) {
+        VStack(alignment: .leading, spacing: 10) {
             HStack {
                 Image(systemName: "heart.fill")
                     .symbolRenderingMode(.multicolor)
@@ -52,17 +75,12 @@ struct AcknowledgmentView: View {
                 
                 Spacer()
             }
-            .padding(.bottom, 5)
             
-            Text("反正写在最后应该没有人会看吧，特别感谢 **朱彬旖** 这些年来的陪伴和帮助，虽然最近发生了很多不愉快的事情，但还是非常感谢🙏")
+            Text("反正写在最后应该没有人会看吧, 特别感谢 **朱彬旖** 这些年来的陪伴和帮助, 虽然最近发生了很多不愉快的事情, 但还是非常感谢.🙏")
         }
         .font(.subheadline)
-        .padding()
         .foregroundColor(.white)
-        .background {
-            LinearGradient(colors: [.orange, .red, .pink], startPoint: .topLeading, endPoint: .bottomTrailing)
-        }
-        .cornerRadius(15)
+        .clippedToRoundedRectangle(background: .linearGradient(colors: [.orange, .red, .pink], startPoint: .topLeading, endPoint: .bottomTrailing))
     }
 }
 

@@ -49,7 +49,6 @@ class GlobalState: ObservableObject {
         try? await Task.sleep(nanoseconds: 100_000_000)
         
         if !servicesError.isEmpty {
-            UINotificationFeedbackGenerator().notificationOccurred(.error)
             withAnimation {
                 isErrorPresented = true
             }

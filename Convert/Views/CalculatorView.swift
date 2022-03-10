@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CalculatorView: View {
     @StateObject var viewModel = CalculatorViewModel()
+    @EnvironmentObject var globalState: GlobalState
     
     @Binding var textFieldInput: String
     @Binding var isPresented: Bool
@@ -16,52 +17,68 @@ struct CalculatorView: View {
     
     var body: some View {
         VStack(spacing: 0) {
+            topBar
             
-            HStack(alignment: .lastTextBaseline) {
-                Button {
-                    withAnimation {
-                        isPresented = false
-                    }
-                    textFieldInput = viewModel.expression + " "
-                    focusTextField = true
-                } label: {
-                    Label("拷贝至输入框", systemImage: "arrow.up.doc.on.clipboard")
-                        .foregroundColor(viewModel.isExpressionAValue() ? .primary : .secondary)
-                        .font(.subheadline)
-                }
-                .disabled(!viewModel.isExpressionAValue())
-
-                Spacer()
-                
-                Button {
-                    withAnimation {
-                        isPresented = false
-                    }
-                    focusTextField = true
-                } label: {
-                    Image(systemName: "xmark.circle.fill")
-                        .symbolRenderingMode(.hierarchical)
-                        .foregroundColor(.secondary)
-                        .font(.title)
-                }
-            }
-            .padding()
-            
-            Text(viewModel.expression.isEmpty ? "输入完整计算公式" : viewModel.expression)
-                .font(.title2.monospaced().bold())
-                .foregroundColor(viewModel.expression.isEmpty ? .secondary : .primary)
-                .padding(.horizontal, 20)
-                .padding(.vertical, 10)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .background(Color(uiColor: .secondarySystemBackground))
-                .cornerRadius(15)
-                .padding(.horizontal, 15)
+            textField
                 .modifier(ShakeEffect(shakes: viewModel.invalidAttempts * 2))
                 .animation(.default, value: viewModel.invalidAttempts)
+                .onLongPressGesture {
+                    if viewModel.isExpressionAValue() {
+                        UINotificationFeedbackGenerator().notificationOccurred(.success)
+                        UIPasteboard.general.string = viewModel.expression
+                        withAnimation {
+                            globalState.showCopySuccess = true
+                        }
+                    }
+                }
             
             ButtonPad()
                 .environmentObject(viewModel)
         }
+    }
+    
+    var textField: some View {
+        Text(viewModel.expression.isEmpty ? "输入完整计算公式" : viewModel.expression)
+            .font(.title2.monospaced().bold())
+            .foregroundColor(viewModel.expression.isEmpty ? .secondary : .primary)
+            .padding(.horizontal, 20)
+            .padding(.vertical, 10)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(Color(uiColor: .secondarySystemBackground))
+            .cornerRadius(15)
+            .padding(.horizontal, 15)
+    }
+    
+    var topBar: some View {
+        HStack(alignment: .lastTextBaseline) {
+            Button {
+                withAnimation {
+                    isPresented = false
+                }
+                focusTextField = true
+                textFieldInput = viewModel.expression + " "
+            } label: {
+                Label("拷贝至输入框", systemImage: "arrow.up.doc.on.clipboard")
+                    .foregroundColor(viewModel.isExpressionAValue() ? .primary : .secondary)
+                    .font(.subheadline)
+            }
+            .disabled(!viewModel.isExpressionAValue())
+            
+            Spacer()
+            
+            Button {
+                withAnimation {
+                    isPresented = false
+                }
+                focusTextField = true
+            } label: {
+                Image(systemName: "xmark.circle.fill")
+                    .symbolRenderingMode(.hierarchical)
+                    .foregroundColor(.secondary)
+                    .font(.title)
+            }
+        }
+        .padding()
     }
 }
 
@@ -83,11 +100,10 @@ struct ButtonPad: View {
                                 .font(font(for: button))
                                 .frame(width: buttonWidth, alignment: .center)
                                 .padding(.vertical, 10)
-                                .background(Color(uiColor: .secondarySystemBackground))
-                                .foregroundColor(.primary)
+                                .background(backgroundColor(for: button))
+                                .foregroundColor(foregroundColor(for: button))
                                 .clipShape(Capsule())
                         }
-
                     }
                 }
             }
@@ -99,10 +115,29 @@ struct ButtonPad: View {
         switch button {
         case .numeric:
             return .title2.monospaced()
+        case .functional, .operant:
+            return .title2.monospaced().weight(.bold)
+        }
+    }
+    
+    func backgroundColor(for button: ButtonType) -> Color {
+        switch button {
+        case .functional(let str):
+            if str == "AC" {
+                return .red
+            }
+            return .accentColor
+        case .numeric, .operant:
+            return Color(uiColor: .secondarySystemBackground)
+        }
+    }
+    
+    func foregroundColor(for button: ButtonType) -> Color {
+        switch button {
         case .functional:
-            return .title2.monospaced().weight(.bold)
-        case .operant:
-            return .title2.monospaced().weight(.bold)
+            return .white
+        case .numeric, .operant:
+            return .primary
         }
     }
 }

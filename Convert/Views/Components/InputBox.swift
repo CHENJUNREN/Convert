@@ -19,12 +19,12 @@ struct InputBox: View {
             VStack(spacing: 0) {
                 ZStack {
                     TextField(textFieldPrompt(), text: $viewModel.textFieldInput)
+                        .padding(.horizontal)
                         .multilineTextAlignment(.center)
                         .disableAutocorrection(true)
                         .textInputAutocapitalization(.never)
                         .submitLabel(.search)
                         .focused($focusTextField)
-                        .padding(.horizontal)
                         .onSubmit {
                             if !viewModel.textFieldInput.isEmpty {
                                 Task {

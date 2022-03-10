@@ -1,5 +1,5 @@
 //
-//  SupportedUnitsGallery.swift
+//  UnitGallery.swift
 //  Convert
 //
 //  Created by Chenjun Ren on 2022-01-01.
@@ -8,7 +8,7 @@
 import SwiftUI
 import Network
 
-struct SupportedUnitsGallery: View {
+struct UnitGallery: View {
     let type: ConversionType
     let units: [UnitInfo]
     let error: ServiceError?
@@ -25,15 +25,11 @@ struct SupportedUnitsGallery: View {
                                 CurrencyUnitCell(unit: unit)
                             }
                         } header: {
-                            VStack(spacing: 0) {
-                                HStack(spacing: 0) {
-                                    Text(sortedUnits[index].0)
-                                        .padding(.horizontal, 25)
-                                        .padding(.vertical, 5)
-                                        .font(.subheadline.bold().monospaced())
-                                    
-                                    Spacer()
-                                }
+                            VStack(alignment: .leading, spacing: 0) {
+                                Text(sortedUnits[index].0)
+                                    .padding(.leading, 25)
+                                    .padding(.bottom, 5)
+                                    .font(.subheadline.monospaced().bold())
                                 
                                 Divider()
                                     .padding(.leading)
@@ -45,15 +41,15 @@ struct SupportedUnitsGallery: View {
                 }
             } else {
                 LazyVGrid(
-                    columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 2),
-                    spacing: 10
+                    columns: Array(repeating: GridItem(.flexible(), spacing: 15), count: 2),
+                    spacing: 15
                 ) {
                     ForEach(units, id: \.self) { unit in
                         NormalUnitCell(unit: unit)
                     }
                 }
                 .padding(.horizontal)
-                .padding(.bottom, 10)
+                .padding(.bottom, 15)
             }
         }
         .overlay {
@@ -67,9 +63,7 @@ struct SupportedUnitsGallery: View {
                         .foregroundColor(.secondary)
                         .font(.footnote)
                 }
-                .padding()
-                .background(.ultraThinMaterial)
-                .cornerRadius(15)
+                .clippedToRoundedRectangle(background: .thinMaterial)
             }
         }
     }
@@ -167,14 +161,8 @@ struct NormalUnitCell: View {
                         .font(.headline.monospaced())
                 }
             }
-            
-            //            Text(unit.eName ?? " ")
-            //                .font(.caption)
-            //                .foregroundColor(.secondary)
         }
-        .padding()
-        .background(Color(uiColor: .secondarySystemBackground))
-        .cornerRadius(15)
+        .clippedToRoundedRectangle(background: Color(uiColor: .secondarySystemBackground))
         .contextMenu {
             if let abbr = unit.abbr {
                 Button {
@@ -193,22 +181,3 @@ struct NormalUnitCell: View {
         }
     }
 }
-
-//HStack(alignment: .center) {
-//    Text(unit.image ?? "🌏")
-//        .font(.title2)
-//
-//    VStack(alignment: .leading, spacing: 2) {
-//        HStack {
-//            Text(unit.cName)
-//            Divider()
-//            Text(unit.abbr!)
-//                .font(.headline)
-//                .foregroundColor(.secondary)
-//        }
-//
-//        Text(unit.eName!)
-//            .font(.caption)
-//            .foregroundColor(.secondary)
-//    }
-//}

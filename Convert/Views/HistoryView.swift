@@ -25,7 +25,7 @@ struct HistoryView: View {
     @State var showWarning = false
     
     var body: some View {
-        historyList
+        mainScreen
             .navigationTitle("转换记录")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -43,6 +43,7 @@ struct HistoryView: View {
                         } label: {
                             Label("切换单位样式", systemImage: "character.book.closed")
                         }
+                        .disabled(records.isEmpty)
                     } label: {
                         Image(systemName: "ellipsis.circle.fill")
                             .symbolRenderingMode(.hierarchical)
@@ -57,53 +58,57 @@ struct HistoryView: View {
             }
     }
     
-    var historyList: some View {
+    var mainScreen: some View {
         ZStack {
             if !records.isEmpty {
-                List {
-                    ForEach(records, id: \.self) { record in
-                        Section {
-                            ForEach(record.unwrappedConversions, id: \.id) { conversion in
-                                let toValue = conversion.toValue
-                                    .formatted(
-                                        with: resultAccuracy,
-                                        scientificNotationMode: scientificNotationMode,
-                                        usesGroupingSeparator: usesGroupingSeparator
-                                    )
-                                let fromValue = conversion.fromValue ?? ""
-                                let fromUnit = showUnitInChinese ? conversion.from?.name ?? "" : conversion.from?.symbol ?? ""
-                                let toUnit = showUnitInChinese ? conversion.to?.name ?? "" : conversion.to?.symbol ?? ""
-                                
-                                EntryCell(fromValue: fromValue, fromUnit: fromUnit, toValue: toValue, toUnit: toUnit)
-                                    .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-                                        Button {
-                                            let pastedString = viewModel.generateCopyString(value: toValue, unit: conversion.to!, type: ConversionType(rawValue: record.conversionType!)!)
-                                            UIPasteboard.general.string = pastedString
-                                            UINotificationFeedbackGenerator().notificationOccurred(.success)
-                                        } label: {
-                                            Image(systemName: "arrow.right.doc.on.clipboard")
-                                        }
-                                        .tint(.blue)
-                                        
-                                        Button(role: ButtonRole.destructive) {
-                                            viewModel.delete(conversion)
-                                        } label: {
-                                            Image(systemName: "trash.fill")
-                                        }
-                                    }
-                            }
-                        } header: {
-                            Text(record.conversionType!)
-                        }
-                    }
-                }
+                historyList
             } else {
                 Text("无历史数据😅")
                     .foregroundColor(.secondary)
-                    .font(.title2.weight(.thin))
+                    .font(.title2.weight(.light))
             }
         }
         .transition(.opacity.animation(.default))
+    }
+    
+    var historyList: some View {
+        List {
+            ForEach(records, id: \.conversionType) { record in
+                Section {
+                    ForEach(record.unwrappedConversions, id: \.id) { conversion in
+                        let toValue = conversion.toValue
+                            .formatted(
+                                with: resultAccuracy,
+                                scientificNotationMode: scientificNotationMode,
+                                usesGroupingSeparator: usesGroupingSeparator
+                            )
+                        let fromValue = conversion.fromValue ?? ""
+                        let fromUnit = showUnitInChinese ? conversion.from?.name ?? "" : conversion.from?.symbol ?? ""
+                        let toUnit = showUnitInChinese ? conversion.to?.name ?? "" : conversion.to?.symbol ?? ""
+                        
+                        EntryCell(fromValue: fromValue, fromUnit: fromUnit, toValue: toValue, toUnit: toUnit)
+                            .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+                                Button {
+                                    let pastedString = viewModel.generateCopyString(value: toValue, unit: conversion.to!, type: ConversionType(rawValue: record.conversionType!)!)
+                                    UIPasteboard.general.string = pastedString
+                                    UINotificationFeedbackGenerator().notificationOccurred(.success)
+                                } label: {
+                                    Image(systemName: "arrow.right.doc.on.clipboard")
+                                }
+                                .tint(.accentColor)
+                                
+                                Button(role: .destructive) {
+                                    viewModel.delete(conversion)
+                                } label: {
+                                    Image(systemName: "trash.fill")
+                                }
+                            }
+                    }
+                } header: {
+                    Text(record.conversionType ?? "")
+                }
+            }
+        }
     }
 }
 
@@ -115,36 +120,67 @@ struct EntryCell: View {
     
     var body: some View {
         HStack(spacing: 0) {
-            GeometryReader { proxy in
-                HStack {
-                    Text(fromValue)
-                        .fontWeight(.bold)
-                    Text(fromUnit)
-                        .fontWeight(.light)
-                        .foregroundColor(.secondary)
-                }
-                .minimumScaleFactor(0.2)
-                .lineLimit(1)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+            HStack {
+                Text(fromValue)
+                    .fontWeight(.bold)
+        
+                Spacer()
+        
+                Text(fromUnit)
+                    .fontWeight(.light)
+                    .foregroundColor(.secondary)
             }
-            
+            .minimumScaleFactor(0.2)
+            .lineLimit(1)
+        
             Image(systemName: "arrow.right.circle.fill")
                 .symbolRenderingMode(.multicolor)
                 .foregroundColor(.accentColor)
                 .padding(.horizontal)
-            
-            GeometryReader { proxy in
-                HStack {
-                    Text(toValue)
-                        .fontWeight(.bold)
-                    Text(toUnit)
-                        .fontWeight(.light)
-                        .foregroundColor(.secondary)
-                }
-                .minimumScaleFactor(0.2)
-                .lineLimit(1)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .trailing)
+        
+            HStack {
+                Text(toValue)
+                    .fontWeight(.bold)
+        
+                Spacer()
+        
+                Text(toUnit)
+                    .fontWeight(.light)
+                    .foregroundColor(.secondary)
             }
+            .minimumScaleFactor(0.2)
+            .lineLimit(1)
         }
     }
 }
+
+//HStack(spacing: 0) {
+//    VStack(alignment: .leading, spacing: 2.5) {
+//        Text(fromValue)
+//            .fontWeight(.bold)
+//
+//        Text(fromUnit)
+//            .fontWeight(.light)
+//            .foregroundColor(.secondary)
+//    }
+//    .minimumScaleFactor(0.2)
+//    .lineLimit(1)
+//    .frame(maxWidth: .infinity, alignment: .leading)
+//
+//    Image(systemName: "arrow.right.circle.fill")
+//        .symbolRenderingMode(.multicolor)
+//        .foregroundColor(.accentColor)
+//        .padding(.horizontal)
+//
+//    VStack(alignment: .trailing, spacing: 2.5) {
+//        Text(toValue)
+//            .fontWeight(.bold)
+//
+//        Text(toUnit)
+//            .fontWeight(.light)
+//            .foregroundColor(.secondary)
+//    }
+//    .minimumScaleFactor(0.2)
+//    .lineLimit(1)
+//    .frame(maxWidth: .infinity, alignment: .trailing)
+//}

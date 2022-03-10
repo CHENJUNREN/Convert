@@ -37,7 +37,7 @@ struct BottomSheet<V: View>: ViewModifier {
                         
                         block()
                     }
-                    .transition(.move(edge: .bottom).animation(.default))
+                    .transition(.move(edge: .bottom))
                     .background(.thinMaterial)
                 }
             }

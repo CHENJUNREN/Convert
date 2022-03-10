@@ -25,10 +25,10 @@ struct SlideInMessage<V: View>: ViewModifier {
                     }
                     .padding(.vertical, 10)
                     .padding(.horizontal)
-                    .background(.regularMaterial)
+                    .background(.thinMaterial)
                     .clipShape(Capsule())
                     .padding(.top, 5)
-                    .transition(.move(edge: .top).combined(with: .opacity).animation(.default))
+                    .transition(.move(edge: .top).combined(with: .opacity))
                     .onAppear {
                         if autoDismiss {
                             Task {

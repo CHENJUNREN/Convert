@@ -12,26 +12,17 @@ struct HomeView: View {
     @StateObject var viewModel = HomeViewModel()
     
     @FocusState var focusTextField: Bool
-    @State var presentDocView = false
     @State var presentHistoryView = false
     @State var presentCalculatorView = false
+    @State var presentSettingsView = false
     
+    @State var presentUseManualView = false
+    @State var selectedDoc = DocType.reminder
+    @State var selectedConversionType = ConversionType.currency
+        
     var body: some View {
         NavigationView {
             mainScreen
-                .navigationTitle("")
-                .navigationBarHidden(true)
-                .ignoresSafeArea(.keyboard, edges: .bottom)
-                .onTapGesture {
-                    if focusTextField == true {
-                        focusTextField = false
-                    }
-                }
-                .toolbar {
-                    ToolbarItemGroup(placement: .keyboard) {
-                        keyboardToolbarItems
-                    }
-                }
                 .blur(radius: globalState.isErrorPresented ? 5 : 0)
                 .animation(.default, value: globalState.isErrorPresented)
                 .overlay {
@@ -60,10 +51,12 @@ struct HomeView: View {
                 .bottomSheet(isPresented: $presentCalculatorView, showDismissButton: false) {
                     CalculatorView(textFieldInput: $viewModel.textFieldInput, isPresented: $presentCalculatorView, focusTextField: $focusTextField)
                 }
+                .navigationTitle("")
+                .navigationBarHidden(true)
         }
-        .sheet(isPresented: $presentDocView) {
+        .sheet(isPresented: $presentUseManualView) {
             SheetView {
-                DocView()
+                UseManualView(selectedDoc: $selectedDoc, selectedConversionType: $selectedConversionType)
             }
         }
         .sheet(isPresented: $presentHistoryView) {
@@ -76,6 +69,7 @@ struct HomeView: View {
     var mainScreen: some View {
         VStack(spacing: 0) {
             header
+                .padding(.bottom)
             
             GeometryReader { proxy in
                 VStack(spacing: 0) {
@@ -83,6 +77,11 @@ struct HomeView: View {
                         .environmentObject(viewModel)
                         .padding(.bottom)
                         .frame(width: proxy.size.width, height: proxy.size.height / 10 * 5.5)
+                        .toolbar {
+                            ToolbarItemGroup(placement: .keyboard) {
+                                keyboardToolbarItems
+                            }
+                        }
                     
                     docBox
                         .frame(width: proxy.size.width, height: proxy.size.height / 10 * 4.5)
@@ -90,6 +89,13 @@ struct HomeView: View {
             }
         }
         .padding()
+        .ignoresSafeArea(.keyboard, edges: .bottom)
+        .onTapGesture {
+            if focusTextField == true {
+                focusTextField = false
+            }
+        }
+        .gesture(swipeGesture)
     }
     
     var header: some View {
@@ -100,7 +106,7 @@ struct HomeView: View {
             
             Spacer()
             
-            NavigationLink {
+            NavigationLink(isActive: $presentSettingsView) {
                 SettingsView()
             } label: {
                 Image(systemName: "ellipsis.circle")
@@ -109,63 +115,105 @@ struct HomeView: View {
                     .gradientForeground()
             }
         }
-        .padding(.bottom)
     }
     
     var docBox: some View {
-        GeometryReader { geo in
-            VStack(spacing: 20) {
-                Label("使用指南", systemImage: "doc.text.magnifyingglass")
-                    .font(.title.weight(.semibold))
-                    .gradientForeground()
-                
-                VStack(spacing: 5) {
-                    Text("查询格式:")
-                        .font(.title3)
-                    Text("值 + 空格 + 单位 + 空格 + 转换单位")
-                        .font(.headline)
-                    Text("例如, \"100 usd cny\"")
-                        .font(.callout)
-                }
-                .foregroundColor(.secondary)
-                
-                Button("查看更多") {
-                    presentDocView = true
-                }
-                .buttonStyle(.borderedProminent)
-                .buttonBorderShape(.roundedRectangle)
+        VStack(spacing: 20) {
+            Label("使用指南", systemImage: "doc.text.magnifyingglass")
+                .font(.title.weight(.semibold))
+                .gradientForeground()
+            
+            VStack(spacing: 5) {
+                Text("输入格式:")
+                    .font(.title3)
+                Text("值 + 空格 + 单位 + 空格 + 转换单位")
+                    .font(.headline)
+                Text("例如, \"100 usd cny\"")
+                    .font(.callout)
             }
-            .frame(width: geo.size.width, height: geo.size.height)
-            .background(Color(uiColor: .secondarySystemBackground))
-            .cornerRadius(15)
+            .foregroundColor(.secondary)
+            
+            Button("查看更多") {
+                selectedDoc = .reminder
+                presentUseManualView = true
+            }
+            .buttonStyle(.borderedProminent)
+            .buttonBorderShape(.roundedRectangle)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .clippedToRoundedRectangle(background: Color(uiColor: .secondarySystemBackground))
+    }
+    
+    var swipeGesture: some Gesture {
+        DragGesture(minimumDistance: 100, coordinateSpace: .local)
+            .onEnded { value in
+                let horizontalAmount = value.translation.width
+                let verticalAmount = value.translation.height
+                if abs(verticalAmount) > abs(horizontalAmount) {
+                    if verticalAmount > 0 {
+                        // swipe down
+                        if focusTextField == true {
+                            focusTextField = false
+                        }
+                    } else {
+                        // swipe up
+                        presentHistoryView = true
+                    }
+                } else {
+                    if horizontalAmount < 0 {
+                        // swipe left
+                        presentSettingsView = true
+                    }
+                }
+            }
     }
     
     var keyboardToolbarItems: some View {
-        HStack {
+        HStack(alignment: .center) {
+            Spacer()
+            
+            Button {
+                selectedDoc = .cheatsheet
+                presentUseManualView = true
+            } label: {
+                Image(systemName: "doc.text.magnifyingglass")
+                    .foregroundColor(.primary)
+            }
+            
             Spacer()
             
             Button {
                 presentHistoryView = true
             } label: {
-                Label("转换记录", systemImage: "clock")
-                    .symbolRenderingMode(.multicolor)
+                Image(systemName: "clock.arrow.circlepath")
                     .foregroundColor(.primary)
-                    .labelStyle(.titleAndIcon)
             }
             
-            Divider()
+            Spacer()
             
             Button {
-                focusTextField = false
                 withAnimation {
                     presentCalculatorView = true
                 }
+                focusTextField = false
             } label: {
-                Label("计算器", systemImage: "candybarphone")
+                Image(systemName: "plus.forwardslash.minus")
                     .foregroundColor(.primary)
-                    .labelStyle(.titleAndIcon)
             }
+            
+            Spacer()
+            
+            Button {
+                UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
+                viewModel.textFieldInput = ""
+            } label: {
+                Image(systemName: "trash.fill")
+                    .foregroundColor(viewModel.textFieldInput.isEmpty ? .secondary : .red)
+            }
+            .disabled(viewModel.textFieldInput.isEmpty)
+            
+            Spacer()
         }
+        .font(.callout)
     }
 }

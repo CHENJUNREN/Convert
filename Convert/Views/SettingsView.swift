@@ -21,9 +21,9 @@ struct SettingsView: View {
     
     @FocusState<Bool> var focusNumPad
     @State var showMailView = false
-    @State var showDocView = false
     @State var showHistoryView = false
     @State var showAckView = false
+    @State var showPrivacyPolicyView = false
     
     var body: some View {
         List {
@@ -41,16 +41,13 @@ struct SettingsView: View {
             
             otherControls
         }
-        .navigationTitle("更多")
+        .tint(.accentColor)
+        .navigationTitle("设置")
         .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden(true)
         .sheet(isPresented: $showMailView) {
             MailView(data: .init(subject: "App 使用反馈", recipient: "convertApp@outlook.com", message: ""))
                 .ignoresSafeArea()
-        }
-        .sheet(isPresented: $showDocView) {
-            SheetView {
-                DocView()
-            }
         }
         .sheet(isPresented: $showHistoryView) {
             SheetView {
@@ -62,15 +59,32 @@ struct SettingsView: View {
                 AcknowledgmentView()
             }
         }
+        .sheet(isPresented: $showPrivacyPolicyView) {
+            SheetView {
+                WebView(url: "https://chenjunren.github.io/app-privacy-policy/")
+                    .ignoresSafeArea(.all, edges: .bottom)
+                    .navigationBarTitleDisplayMode(.inline)
+            }
+            .interactiveDismissDisabled()
+        }
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
                 Spacer()
                 Button {
                     focusNumPad = false
                 } label: {
-                    Label("完成", systemImage: "keyboard.chevron.compact.down")
+                    Image(systemName: "keyboard.chevron.compact.down")
                         .foregroundColor(.primary)
-                        .labelStyle(.titleAndIcon)
+                }
+            }
+            
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button {
+                    dismiss()
+                } label: {
+                    Image(systemName: "chevron.left.circle.fill")
+                        .symbolRenderingMode(.hierarchical)
+                        .foregroundColor(.secondary)
                 }
             }
         }
@@ -96,7 +110,7 @@ struct SettingsView: View {
                 Text("位")
             }
         } header: {
-            Text("结果最大精度")
+            Text("输出最大精度")
         }
     }
     
@@ -108,10 +122,10 @@ struct SettingsView: View {
             }
             
             VStack(alignment: .leading) {
-                Label("科学计数法", systemImage: "rectangle.and.pencil.and.ellipsis")
+                Label("科学记数法", systemImage: "rectangle.and.pencil.and.ellipsis")
                     .foregroundColor(.primary)
                 
-                Picker("科学计数法", selection: $selectedScientificNotationMode) {
+                Picker("科学记数法", selection: $selectedScientificNotationMode) {
                     Text("部分使用").tag(ScientificNotationMode.partiallyEnabled)
                     Text("使用").tag(ScientificNotationMode.enabled)
                     Text("不使用").tag(ScientificNotationMode.disabled)
@@ -120,11 +134,11 @@ struct SettingsView: View {
             }
             .padding(.vertical, 10)
         } header: {
-            Text("结果展示")
+            Text("数值显示")
         } footer: {
             VStack(alignment: .leading, spacing: 5) {
                 Label("在整数部分每隔 3 位插入分隔符(,)", systemImage: "1.circle.fill")
-                Label("**部分使用**模式下，仅针对大于 \(Utils.superscriptize(str: "10^8"))，小于 \(Utils.superscriptize(str: "10^-8")) 或者小于最大精度的数值使用科学计数法显示", systemImage: "2.circle.fill")
+                Label("**部分使用**模式下, 仅针对大于 \(Utils.superscriptize(str: "10^8")), 小于 \(Utils.superscriptize(str: "10^-8")) 或者小于最大精度的数值使用科学记数法显示", systemImage: "2.circle.fill")
             }
             .symbolRenderingMode(.hierarchical)
         }
@@ -133,7 +147,7 @@ struct SettingsView: View {
     var copyControl: some View {
         Section {
             Toggle(isOn: $copyAlongWithUnit) {
-                Label("拷贝时带上单位", systemImage: "arrow.right.doc.on.clipboard")
+                Label("拷贝结果时带上单位", systemImage: "arrow.right.doc.on.clipboard")
                     .foregroundColor(.primary)
             }
             
@@ -151,7 +165,7 @@ struct SettingsView: View {
                 .padding(.vertical, 10)
                 
                 VStack(alignment: .leading) {
-                    Label("货币拷贝格式", systemImage: "yensign.circle")
+                    Label("货币单位格式", systemImage: "yensign.circle")
                         .foregroundColor(.primary)
                     
                     Picker("选择货币拷贝格式", selection: $currencyCopyFormat) {
@@ -167,13 +181,7 @@ struct SettingsView: View {
                 .padding(.vertical, 10)
             }
         } header: {
-            Text("结果拷贝")
-        } footer: {
-            VStack(alignment: .leading, spacing: 5) {
-                Label("长按首页转换结果可以拷贝", systemImage: "1.circle.fill")
-                Label("在**转换记录**页面中，左滑条目也可以拷贝", systemImage: "2.circle.fill")
-            }
-            .symbolRenderingMode(.hierarchical)
+            Text("单位拷贝")
         }
     }
     
@@ -215,20 +223,12 @@ struct SettingsView: View {
     var presentDocsControl: some View {
         Section {
             Button {
-                showDocView = true
-            } label: {
-                Label("使用指南", systemImage: "doc.text.magnifyingglass")
-                    .foregroundColor(.primary)
-            }
-
-            Button {
                 showHistoryView = true
             } label: {
-                Label("转换记录", systemImage: "clock")
-                    .symbolRenderingMode(.multicolor)
-                    .foregroundColor(.primary)
+                Label("转换记录", systemImage: "clock.arrow.circlepath")
             }
         }
+        .foregroundColor(.primary)
     }
 
     var otherControls: some View {
@@ -236,17 +236,19 @@ struct SettingsView: View {
             Button {
                 showMailView = true
             } label: {
-                Label("反馈意见", systemImage: "envelope")
+                Label("反馈意见", systemImage: "envelope.circle.fill")
+                    .symbolRenderingMode(MailView.canBePresented ? .multicolor : .monochrome)
                     .foregroundColor(MailView.canBePresented ? .primary : .secondary)
             }
             .disabled(!MailView.canBePresented)
             
-//            Button {
-//
-//            } label: {
-//                Label("支持一下", systemImage: "giftcard")
-//                    .foregroundColor(.primary)
-//            }
+            Button {
+                showPrivacyPolicyView = true
+            } label: {
+                Label("隐私政策", systemImage: "hand.raised.circle.fill")
+                    .symbolRenderingMode(.multicolor)
+                    .foregroundColor(.primary)
+            }
             
             Button {
                 showAckView = true

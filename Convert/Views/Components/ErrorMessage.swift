@@ -45,11 +45,11 @@ struct ErrorMessage: View {
                 
             Button {
                 if !globalState.isLoading {
-                    UIImpactFeedbackGenerator(style: .rigid).impactOccurred()
                     Task {
                         await globalState.initServices()
                         // button shakes when loading failed
                         if globalState.isErrorPresented {
+                            UINotificationFeedbackGenerator().notificationOccurred(.error)
                             invalidAttempts += 1
                         }
                     }
