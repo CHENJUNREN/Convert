@@ -7,11 +7,6 @@
 
 import SwiftUI
 
-enum DocType: String, CaseIterable {
-    case reminder = "使用说明"
-    case cheatsheet = "单位列表"
-}
-
 struct UseManualView: View {
     @Binding var selectedDoc: DocType
     @Binding var selectedConversionType: ConversionType
@@ -42,4 +37,9 @@ struct UseManualView: View {
             CheatSheetView(selectedConversionType: $selectedConversionType)
         }
     }
+}
+
+enum DocType: String, CaseIterable {
+    case reminder = "使用说明"
+    case cheatsheet = "单位列表"
 }

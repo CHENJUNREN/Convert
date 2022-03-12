@@ -65,7 +65,6 @@ struct SettingsView: View {
                     .ignoresSafeArea(.all, edges: .bottom)
                     .navigationBarTitleDisplayMode(.inline)
             }
-            .interactiveDismissDisabled()
         }
         .toolbar {
             ToolbarItemGroup(placement: .keyboard) {
@@ -237,7 +236,7 @@ struct SettingsView: View {
                 showMailView = true
             } label: {
                 Label("反馈意见", systemImage: "envelope.circle.fill")
-                    .symbolRenderingMode(MailView.canBePresented ? .multicolor : .monochrome)
+                    .symbolRenderingMode(MailView.canBePresented ? .multicolor : .hierarchical)
                     .foregroundColor(MailView.canBePresented ? .primary : .secondary)
             }
             .disabled(!MailView.canBePresented)
@@ -253,7 +252,7 @@ struct SettingsView: View {
             Button {
                 showAckView = true
             } label: {
-                Label("致谢", systemImage: "heart.fill")
+                Label("致谢", systemImage: "heart.circle.fill")
                     .symbolRenderingMode(.multicolor)
                     .foregroundColor(.primary)
             }
