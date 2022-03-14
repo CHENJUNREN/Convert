@@ -137,13 +137,11 @@
 			children = (
 				A2283D2427B64ECE003C70E1 /* MailView.swift */,
 				A29DEE5427D73F400035A45B /* WebView.swift */,
-				A25EE6A727A291D0008D46BF /* View+extensions.swift */,
 				A281C11827AD0FB50054343B /* BottomSheet.swift */,
 				A2E94D6A27B8D8AC00A1EFE2 /* DismissButton.swift */,
 				A22C73A827BCA05D00E1E8D6 /* SheetView.swift */,
 				A215CC5127BFDBAE004315AF /* ShakeEffect.swift */,
 				A215CC5327BFE287004315AF /* SlideInMessage.swift */,
-				A2A8C77F27D37DEA006DC725 /* UINavigationController+UIGestureRecognizerDelegate.swift */,
 			);
 			path = "Reusable Components";
 			sourceTree = "<group>";
@@ -153,6 +151,8 @@
 			children = (
 				A2668DB8278F32F200F2BF4A /* CustomType.swift */,
 				A2E08DF5277CA8EB00D1319E /* Utils.swift */,
+				A25EE6A727A291D0008D46BF /* View+extensions.swift */,
+				A2A8C77F27D37DEA006DC725 /* UINavigationController+UIGestureRecognizerDelegate.swift */,
 				A25EE6AB27A307C6008D46BF /* Double+extensions.swift */,
 				A2668DBA278F3CD900F2BF4A /* currencyCodeToName.csv */,
 			);
