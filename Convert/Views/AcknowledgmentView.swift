@@ -95,7 +95,7 @@ struct AcknowledgmentView: View {
                 Spacer()
             }
             
-            Text("特别感谢 朱彬旖 这些年来在异国他乡的陪伴和帮助, 感谢她能一直包容我的任性和不成熟, 感谢她给我带来了一段特殊且美好的回忆")
+            Text("特别感谢 Lucia 这些年来的陪伴和帮助, 感谢她能一直包容我的任性和不成熟, 感谢她给我带来了一段特别美好的回忆")
                 .fontWeight(.bold)
         }
         .clippedToRoundedRectangle(background: .linearGradient(colors: [.orange, .red, .pink], startPoint: .topLeading, endPoint: .bottomTrailing))

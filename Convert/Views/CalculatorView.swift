@@ -50,7 +50,7 @@ struct CalculatorView: View {
     }
     
     var topBar: some View {
-        HStack(alignment: .lastTextBaseline) {
+        HStack(alignment: .center) {
             Button {
                 withAnimation {
                     isPresented = false

@@ -38,7 +38,7 @@ struct ErrorMessage: View {
                     Text("请尝试重新加载")
                         .font(.headline)
                 } else {
-                    Text("请连接网络后，再尝试重新加载")
+                    Text("请连接网络后, 再尝试重新加载")
                         .font(.headline)
                 }
             }

@@ -109,10 +109,10 @@ struct HomeView: View {
             NavigationLink(isActive: $presentSettingsView) {
                 SettingsView()
             } label: {
-                Image(systemName: "ellipsis.circle")
+                Image(systemName: "ellipsis.circle.fill")
                     .font(.system(size: 25))
                     .symbolRenderingMode(.hierarchical)
-                    .gradientForeground()
+                    .foregroundColor(.secondary)
             }
         }
     }
