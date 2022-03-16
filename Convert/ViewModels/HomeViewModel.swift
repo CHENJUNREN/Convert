@@ -7,7 +7,6 @@
 
 import Foundation
 
-@MainActor
 class HomeViewModel: ObservableObject {
     
     let conversionProcessor: ConversionProcessor = .shared
@@ -17,6 +16,7 @@ class HomeViewModel: ObservableObject {
     @Published var conversionError: ServiceError?
     @Published var textFieldInput = ""
     
+    @MainActor
     func fetchConversionResult() async {
         conversionError = nil
         switch await conversionProcessor.conversionResult(for: textFieldInput) {
