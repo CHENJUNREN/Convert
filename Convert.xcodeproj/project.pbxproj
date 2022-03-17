@@ -223,13 +223,13 @@
 			isa = PBXGroup;
 			children = (
 				A2A4C2022775ABDB00F641AA /* ConvertApp.swift */,
+				A270ECC227CE7E1F00B7A642 /* Launch Screen.storyboard */,
+				A2A4C2062775ABDD00F641AA /* Assets.xcassets */,
 				A25D06302776FEAF0093249D /* Views */,
 				A2F1987F2779B41000514793 /* ViewModels */,
 				A25D062F2776FEA70093249D /* Models */,
 				A2C6611C27B795A000007CA7 /* Persistence */,
 				A23B227227785134005326CA /* Utilities */,
-				A270ECC227CE7E1F00B7A642 /* Launch Screen.storyboard */,
-				A2A4C2062775ABDD00F641AA /* Assets.xcassets */,
 				A2A4C2082775ABDD00F641AA /* Preview Content */,
 			);
 			path = Convert;

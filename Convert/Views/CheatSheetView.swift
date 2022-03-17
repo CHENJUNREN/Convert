@@ -11,7 +11,6 @@ struct CheatSheetView: View {
     @EnvironmentObject var globalState: GlobalState
     
     @Binding var selectedConversionType: ConversionType
-    
     @State private var searchBarText = ""
     
     var body: some View {

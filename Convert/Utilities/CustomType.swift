@@ -74,3 +74,21 @@ enum CurrencyCopyFormat: Int {
     case withCurrencyCodeOrName
     case withCurrencySymbol
 }
+
+enum DocType: String, CaseIterable {
+    case reminder = "使用说明"
+    case cheatsheet = "单位列表"
+}
+
+enum ButtonType: Hashable {
+    case numeric(String)
+    case functional(String)
+    case operant(String)
+    
+    var label: String {
+        switch self {
+        case .numeric(let str), .functional(let str), .operant(let str):
+            return str
+        }
+    }
+}

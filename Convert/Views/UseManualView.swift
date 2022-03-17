@@ -38,8 +38,3 @@ struct UseManualView: View {
         }
     }
 }
-
-enum DocType: String, CaseIterable {
-    case reminder = "使用说明"
-    case cheatsheet = "单位列表"
-}

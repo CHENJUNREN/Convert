@@ -62,16 +62,3 @@ class CalculatorViewModel: ObservableObject {
         return Double(expression) != nil
     }
 }
-
-enum ButtonType: Hashable {
-    case numeric(String)
-    case functional(String)
-    case operant(String)
-    
-    var label: String {
-        switch self {
-        case .numeric(let str), .functional(let str), .operant(let str):
-            return str
-        }
-    }
-}
